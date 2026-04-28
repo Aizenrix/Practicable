@@ -1,0 +1,148 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Role {
+  id          Int      @id @default(autoincrement())
+  code        String   @unique
+  name        String
+  description String?
+  users       User[]
+  createdAt   DateTime @default(now())
+}
+
+model User {
+  id           Int      @id @default(autoincrement())
+  fullName     String
+  email        String   @unique
+  passwordHash String
+  roleId       Int
+  isActive     Boolean  @default(true)
+  role         Role     @relation(fields: [roleId], references: [id])
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  orders       Order[]
+}
+
+model Client {
+  id        Int      @id @default(autoincrement())
+  fullName  String
+  phone     String?
+  notes     String?
+  createdAt DateTime @default(now())
+  orders    Order[]
+}
+
+model CafeTable {
+  id          Int      @id @default(autoincrement())
+  number      Int      @unique
+  seats       Int
+  isOccupied  Boolean  @default(false)
+  description String?
+  createdAt   DateTime @default(now())
+  orders      Order[]
+}
+
+model MenuCategory {
+  id        Int        @id @default(autoincrement())
+  name      String     @unique
+  isActive  Boolean    @default(true)
+  createdAt DateTime   @default(now())
+  items     MenuItem[]
+}
+
+model MenuItem {
+  id          Int          @id @default(autoincrement())
+  name        String
+  price       Float
+  description String?
+  isAvailable Boolean      @default(true)
+  categoryId  Int
+  createdAt   DateTime     @default(now())
+  category    MenuCategory @relation(fields: [categoryId], references: [id])
+  orderItems  OrderItem[]
+  recipeItems RecipeItem[]
+}
+
+model Ingredient {
+  id          Int          @id @default(autoincrement())
+  name        String       @unique
+  unit        String
+  stockAmount Float
+  createdAt   DateTime     @default(now())
+  recipeItems RecipeItem[]
+}
+
+model RecipeItem {
+  id           Int        @id @default(autoincrement())
+  menuItemId   Int
+  ingredientId Int
+  amount       Float
+  menuItem     MenuItem   @relation(fields: [menuItemId], references: [id])
+  ingredient   Ingredient @relation(fields: [ingredientId], references: [id])
+
+  @@unique([menuItemId, ingredientId])
+}
+
+model OrderStatus {
+  id        Int      @id @default(autoincrement())
+  code      String   @unique
+  name      String
+  createdAt DateTime @default(now())
+  orders    Order[]
+}
+
+model Order {
+  id          Int         @id @default(autoincrement())
+  userId      Int
+  clientId    Int?
+  tableId     Int
+  statusId    Int
+  totalAmount Float       @default(0)
+  comment     String?
+  openedAt    DateTime    @default(now())
+  closedAt    DateTime?
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  user        User        @relation(fields: [userId], references: [id])
+  client      Client?     @relation(fields: [clientId], references: [id])
+  table       CafeTable   @relation(fields: [tableId], references: [id])
+  status      OrderStatus @relation(fields: [statusId], references: [id])
+  orderItems  OrderItem[]
+  payment     Payment?
+}
+
+model OrderItem {
+  id         Int      @id @default(autoincrement())
+  orderId    Int
+  menuItemId Int
+  quantity   Int
+  unitPrice  Float
+  note       String?
+  order      Order    @relation(fields: [orderId], references: [id])
+  menuItem   MenuItem @relation(fields: [menuItemId], references: [id])
+}
+
+model PaymentMethod {
+  id        Int       @id @default(autoincrement())
+  code      String    @unique
+  name      String
+  createdAt DateTime  @default(now())
+  payments  Payment[]
+}
+
+model Payment {
+  id              Int           @id @default(autoincrement())
+  orderId          Int           @unique
+  paymentMethodId  Int
+  amount           Float
+  paidAt           DateTime      @default(now())
+  transactionCode  String?
+  order            Order         @relation(fields: [orderId], references: [id])
+  paymentMethod    PaymentMethod @relation(fields: [paymentMethodId], references: [id])
+}

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Calipso.Coffee | Система управления</title>
+    <style>
+      body { margin: 0; background: #0b0c0f; color: #e8e8ea; font-family: "Inter", "Segoe UI", Arial, sans-serif; }
+      .app-shell { display: grid; grid-template-columns: 260px 1fr; min-height: 100vh; }
+      .sidebar { border-right: 1px solid #2b2e36; background: #0a0b0e; padding: 24px 16px; }
+      .content { padding: 24px; }
+      .menu-btn, button, input, select { background: #121316; color: #e8e8ea; border: 1px solid #2b2e36; }
+      .panel, .card { background: #121316; border: 1px solid #2b2e36; padding: 16px; margin-top: 16px; }
+      .hidden { display: none; }
+    </style>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand">
+          <h1>Calipso.Coffee</h1>
+          <p>Официальная панель управления</p>
+        </div>
+        <nav class="menu">
+          <button data-view="dashboard" class="menu-btn active">Сводка</button>
+          <button data-view="orders" class="menu-btn">Заказы</button>
+          <button data-view="menu" class="menu-btn">Меню</button>
+          <button data-view="tables" class="menu-btn">Столы</button>
+          <button data-view="payments" class="menu-btn">Оплаты</button>
+          <button data-view="users" class="menu-btn">Пользователи</button>
+        </nav>
+      </aside>
+
+      <main class="content">
+        <header class="topbar">
+          <div>
+            <h2 id="view-title">Сводка</h2>
+            <p id="view-subtitle">Мониторинг ключевых показателей системы</p>
+          </div>
+          <div class="auth-box" id="auth-box">
+            <form id="login-form" class="login-form">
+              <input type="email" id="email" value="admin@calipso.coffee" required />
+              <input type="password" id="password" value="admin123" required />
+              <button type="submit">Войти</button>
+            </form>
+            <div id="user-panel" class="user-panel hidden">
+              <span id="user-name"></span>
+              <button id="logout-btn">Выйти</button>
+            </div>
+          </div>
+        </header>
+
+        <section class="panel" id="messages"></section>
+
+        <section class="grid" id="view-dashboard">
+          <article class="card">
+            <h3>Всего заказов</h3>
+            <p id="ordersCount" class="metric">—</p>
+          </article>
+          <article class="card">
+            <h3>Открытые заказы</h3>
+            <p id="openOrdersCount" class="metric">—</p>
+          </article>
+          <article class="card">
+            <h3>Выручка</h3>
+            <p id="revenue" class="metric">—</p>
+          </article>
+          <article class="card full">
+            <h3>Топ позиций</h3>
+            <ul id="topItems"></ul>
+          </article>
+        </section>
+
+        <section class="panel hidden" id="view-orders">
+          <h3>Заказы</h3>
+          <form class="inline-form" id="create-order-form">
+            <select id="order-table" required></select>
+            <select id="order-item"></select>
+            <input id="order-qty" type="number" min="1" value="1" />
+            <button type="button" id="add-order-item">Добавить позицию</button>
+            <button type="submit">Создать заказ</button>
+          </form>
+          <div id="pending-items" class="chips"></div>
+          <div class="actions"><button id="refresh-orders">Обновить</button></div>
+          <div id="orders-list" class="table-like"></div>
+        </section>
+
+        <section class="panel hidden" id="view-menu">
+          <h3>Позиции меню</h3>
+          <form id="create-menu-item-form" class="inline-form">
+            <input id="menu-item-name" placeholder="Название" required />
+            <input id="menu-item-price" type="number" min="1" step="0.01" placeholder="Цена" required />
+            <select id="menu-item-category" required></select>
+            <button type="submit">Добавить позицию</button>
+          </form>
+          <div class="actions"><button id="refresh-menu">Обновить</button></div>
+          <div id="menu-list" class="table-like"></div>
+        </section>
+
+        <section class="panel hidden" id="view-tables">
+          <h3>Столы</h3>
+          <form id="create-table-form" class="inline-form">
+            <input id="table-number" type="number" min="1" placeholder="Номер стола" required />
+            <input id="table-seats" type="number" min="1" placeholder="Мест" required />
+            <button type="submit">Добавить стол</button>
+          </form>
+          <div class="actions"><button id="refresh-tables">Обновить</button></div>
+          <div id="tables-list" class="table-like"></div>
+        </section>
+
+        <section class="panel hidden" id="view-payments">
+          <h3>Оплаты</h3>
+          <form id="payment-form" class="inline-form">
+            <input type="number" id="payment-order-id" placeholder="Order ID" required />
+            <select id="payment-method">
+              <option value="CASH">Наличные</option>
+              <option value="CARD">Карта</option>
+            </select>
+            <button type="submit">Провести оплату</button>
+          </form>
+        </section>
+
+        <section class="panel hidden" id="view-users">
+          <h3>Пользователи</h3>
+          <form id="create-user-form" class="inline-form">
+            <input id="user-name-input" placeholder="ФИО" required />
+            <input id="user-email-input" type="email" placeholder="Email" required />
+            <input id="user-password-input" type="password" placeholder="Пароль" required />
+            <select id="user-role-input">
+              <option value="WAITER">Официант</option>
+              <option value="CHEF">Повар</option>
+              <option value="ADMIN">Администратор</option>
+              <option value="MANAGER">Управляющий</option>
+            </select>
+            <button type="submit">Добавить пользователя</button>
+          </form>
+          <div class="actions"><button id="refresh-users">Обновить</button></div>
+          <div id="users-list" class="table-like"></div>
+        </section>
+      </main>
+    </div>
+    <script src="/app.js"></script>
+  </body>
+</html>
