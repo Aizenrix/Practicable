@@ -9,10 +9,10 @@ router.use(authRequired);
 router.use(allowRoles("ADMIN", "MANAGER"));
 
 const createUserSchema = z.object({
-  fullName: z.string().min(2),
-  email: z.string().email(),
+  fullName: z.string().trim().min(2).max(80),
+  email: z.string().trim().toLowerCase().email(),
   password: z.string().min(6),
-  roleCode: z.string().min(2)
+  roleCode: z.string().trim().min(2).max(20)
 });
 
 router.get("/", async (_req, res) => {
