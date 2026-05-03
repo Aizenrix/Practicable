@@ -11,14 +11,28 @@ const { menuRouter } = require("./routes/menu.routes");
 const { ordersRouter } = require("./routes/orders.routes");
 const { paymentsRouter } = require("./routes/payments.routes");
 const { reportsRouter } = require("./routes/reports.routes");
+const { clientsRouter } = require("./routes/clients.routes");
+const { inventoryRouter } = require("./routes/inventory.routes");
+const { mutationCooldown } = require("./middleware/security");
 
 const app = express();
 
-app.use(helmet());
+app.use(
+  helmet({
+    hsts: false,
+    contentSecurityPolicy: {
+      useDefaults: true,
+      directives: {
+        "upgrade-insecure-requests": null
+      }
+    }
+  })
+);
 app.use(cors());
 app.use(express.json());
 app.use(morgan("dev"));
 app.use(express.static(path.join(__dirname, "..", "public")));
+app.use(mutationCooldown);
 
 app.get("/health", (_req, res) => {
   res.json({ status: "ok", service: "calipso-coffee-api" });
@@ -31,6 +45,8 @@ app.use("/api/menu", menuRouter);
 app.use("/api/orders", ordersRouter);
 app.use("/api/payments", paymentsRouter);
 app.use("/api/reports", reportsRouter);
+app.use("/api/clients", clientsRouter);
+app.use("/api/inventory", inventoryRouter);
 
 app.get("/", (_req, res) => {
   res.sendFile(path.join(__dirname, "..", "public", "index.html"));
