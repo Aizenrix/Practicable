@@ -5,7 +5,7 @@
 ## Что реализовано
 
 - Авторизация с JWT и ролями (`WAITER`, `CHEF`, `ADMIN`, `MANAGER`).
-- Модули: пользователи, столы, статусы, способы оплаты, меню, заказы, оплаты, отчеты.
+- Модули: авторизация, пользователи, клиенты, столы, статусы, способы оплаты, меню, ингредиенты/рецептуры, заказы, оплаты, отчеты.
 - База данных по сущностям из этапов: роли, пользователи, клиенты, столы, меню, заказы, элементы заказа, статусы, оплаты, ингредиенты, рецептуры.
 
 ## Быстрый старт
@@ -51,12 +51,17 @@ npm run dev
 - `POST /api/auth/login`
 - `GET /api/auth/me`
 - `GET/POST /api/users`
+- `GET/POST/PATCH /api/clients`
 - `GET/POST /api/reference/tables`
 - `PATCH /api/reference/tables/:id/occupancy`
 - `GET/POST /api/menu/categories`
 - `GET/POST /api/menu/items`
 - `PATCH /api/menu/items/:id/availability`
+- `GET/POST/PATCH /api/inventory/ingredients`
+- `GET/POST /api/inventory/recipes`
 - `GET/POST /api/orders`
 - `PATCH /api/orders/:id/status`
-- `POST /api/payments`
+- `GET/POST /api/payments`
 - `GET /api/reports/summary`
+- `GET /api/reports/orders-by-status`
+- `GET /api/reports/tables-load`
