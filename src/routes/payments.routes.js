@@ -6,6 +6,21 @@ const { authRequired, allowRoles } = require("../middleware/auth");
 const router = express.Router();
 router.use(authRequired);
 
+router.get("/", allowRoles("WAITER", "ADMIN", "MANAGER"), async (_req, res) => {
+  const rows = await prisma.payment.findMany({
+    include: {
+      order: {
+        include: {
+          table: true
+        }
+      },
+      paymentMethod: true
+    },
+    orderBy: { paidAt: "desc" }
+  });
+  return res.json(rows);
+});
+
 const paymentSchema = z.object({
   orderId: z.number().int().positive(),
   paymentMethodCode: z.string().min(2),
@@ -39,6 +54,7 @@ router.post("/", allowRoles("WAITER", "ADMIN", "MANAGER"), async (req, res) => {
 
     return res.status(201).json(payment);
   } catch (error) {
+    console.error(error);
     return res.status(400).json({ error: "Не удалось зарегистрировать оплату" });
   }
 });
