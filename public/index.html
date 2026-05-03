@@ -3,49 +3,126 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
     <title>Calipso.Coffee | Система управления</title>
     <style>
-      body { margin: 0; background: #0b0c0f; color: #e8e8ea; font-family: "Inter", "Segoe UI", Arial, sans-serif; }
-      .app-shell { display: grid; grid-template-columns: 260px 1fr; min-height: 100vh; }
-      .sidebar { border-right: 1px solid #2b2e36; background: #0a0b0e; padding: 24px 16px; }
-      .content { padding: 24px; }
-      .menu-btn, button, input, select { background: #121316; color: #e8e8ea; border: 1px solid #2b2e36; }
-      .panel, .card { background: #121316; border: 1px solid #2b2e36; padding: 16px; margin-top: 16px; }
+      :root {
+        --bg: #07080c;
+        --panel: #10131a;
+        --panel-2: #141923;
+        --surface: #1a212e;
+        --line: #252d3a;
+        --text: #edf1f7;
+        --muted: #9aa5b5;
+        --accent: #cfd7e4;
+        --success: #8fe5b7;
+        --danger: #f2a3a3;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        background: radial-gradient(1200px 800px at 100% -30%, #161f2e55 0%, transparent 45%),
+          linear-gradient(180deg, #06070a 0%, #0a0d13 100%);
+        color: var(--text);
+        font-family: Inter, "Segoe UI", Arial, sans-serif;
+        line-height: 1.45;
+      }
+      .app-shell { display: grid; grid-template-columns: 280px 1fr; min-height: 100vh; }
+      .sidebar {
+        border-right: 1px solid var(--line);
+        background: linear-gradient(180deg, #0b0f16 0%, #0a0d12 100%);
+        padding: 28px 18px;
+      }
+      .brand h1 { margin: 0; font-size: 36px; font-weight: 750; letter-spacing: -0.02em; }
+      .brand p { margin: 10px 0 0; color: var(--muted); font-size: 13px; max-width: 180px; }
+      .menu { margin-top: 28px; display: grid; gap: 10px; }
+      .menu-btn {
+        border: 1px solid var(--line); background: transparent; color: var(--text); padding: 12px 14px;
+        font-size: 14px; font-weight: 540; text-align: left; cursor: pointer; border-radius: 10px; transition: all .18s ease;
+      }
+      .menu-btn.active, .menu-btn:hover { background: var(--surface); border-color: #3b4556; transform: translateX(2px); }
+      .content { padding: 28px 30px; }
+      .topbar { display: flex; justify-content: space-between; align-items: center; gap: 18px; margin-bottom: 14px; }
+      .topbar-title h2 { margin: 0; font-size: 34px; font-weight: 720; letter-spacing: -0.02em; }
+      .topbar-title p { margin: 6px 0 0; color: var(--muted); font-size: 14px; }
+      .login-form, .inline-form { display: flex; gap: 10px; flex-wrap: wrap; }
+      input, select, button {
+        background: #0d121a; color: var(--text); border: 1px solid var(--line);
+        padding: 11px 12px; font-size: 14px; min-height: 42px;
+      }
+      input, select { min-width: 150px; }
+      button { cursor: pointer; border-radius: 10px; font-weight: 600; transition: all .16s ease; }
+      button:hover { border-color: #3d4858; background: #131a25; }
+      .panel, .card {
+        border: 1px solid var(--line); background: linear-gradient(180deg, var(--panel) 0%, #0f141d 100%);
+        padding: 18px; margin-top: 16px; border-radius: 12px; box-shadow: inset 0 1px 0 #ffffff10, 0 8px 24px #00000024;
+      }
+      .panel h3, .card h3 { margin-top: 0; margin-bottom: 12px; font-size: 22px; letter-spacing: -0.02em; }
+      #messages { min-height: 58px; display: flex; align-items: center; font-weight: 560; }
+      .grid { margin-top: 10px; display: grid; grid-template-columns: repeat(3, minmax(220px, 1fr)); gap: 16px; }
+      .card.full { grid-column: 1 / -1; }
+      .metric { font-size: 36px; margin: 4px 0 0; font-weight: 700; }
+      .table-like { margin-top: 14px; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; background: #0c1016; }
+      .row { display: grid; gap: 10px; padding: 11px 12px; border-bottom: 1px solid var(--line); align-items: center; font-size: 13px; }
+      .row.header { background: #111824; font-weight: 600; letter-spacing: .02em; text-transform: uppercase; font-size: 11px; color: var(--muted); }
+      .row:last-child { border-bottom: none; }
+      .ok { color: var(--success); }
+      .err { color: var(--danger); }
       .hidden { display: none; }
+      .actions { margin-top: 12px; }
+      .chips { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+      .chip {
+        border: 1px solid var(--line); background: #121928; padding: 7px 10px; font-size: 12px;
+        border-radius: 999px; display: inline-flex; align-items: center; gap: 8px;
+      }
+      .btn-xs { padding: 6px 9px; font-size: 12px; min-height: 30px; }
+      .user-name { border: 1px solid var(--line); padding: 10px 12px; border-radius: 10px; background: #0d121a; color: var(--accent); }
+      @media (max-width: 1100px) {
+        .app-shell { grid-template-columns: 1fr; }
+        .sidebar { border-right: none; border-bottom: 1px solid var(--line); }
+        .grid { grid-template-columns: 1fr; }
+        .content { padding: 18px; }
+        .topbar-title h2 { font-size: 28px; }
+      }
     </style>
-    <link rel="stylesheet" href="/styles.css" />
+    <link rel="stylesheet" href="/styles.css?v=20260429-2" />
   </head>
   <body>
     <div class="app-shell">
       <aside class="sidebar">
         <div class="brand">
           <h1>Calipso.Coffee</h1>
-          <p>Официальная панель управления</p>
+          <p>Enterprise Control Panel</p>
         </div>
         <nav class="menu">
           <button data-view="dashboard" class="menu-btn active">Сводка</button>
           <button data-view="orders" class="menu-btn">Заказы</button>
           <button data-view="menu" class="menu-btn">Меню</button>
+          <button data-view="clients" class="menu-btn">Клиенты</button>
+          <button data-view="inventory" class="menu-btn">Ингредиенты</button>
           <button data-view="tables" class="menu-btn">Столы</button>
           <button data-view="payments" class="menu-btn">Оплаты</button>
           <button data-view="users" class="menu-btn">Пользователи</button>
+          <button data-view="analytics" class="menu-btn">Аналитика</button>
         </nav>
       </aside>
 
       <main class="content">
         <header class="topbar">
-          <div>
+          <div class="topbar-title">
             <h2 id="view-title">Сводка</h2>
             <p id="view-subtitle">Мониторинг ключевых показателей системы</p>
           </div>
           <div class="auth-box" id="auth-box">
-            <form id="login-form" class="login-form">
-              <input type="email" id="email" value="admin@calipso.coffee" required />
-              <input type="password" id="password" value="admin123" required />
+            <form id="login-form" class="login-form" action="#" method="post">
+              <input type="email" id="email" value="admin@calipso.coffee" minlength="6" required />
+              <input type="password" id="password" value="admin123" minlength="6" required />
               <button type="submit">Войти</button>
             </form>
             <div id="user-panel" class="user-panel hidden">
-              <span id="user-name"></span>
+              <span id="user-name" class="user-name"></span>
               <button id="logout-btn">Выйти</button>
             </div>
           </div>
@@ -73,7 +150,7 @@
         </section>
 
         <section class="panel hidden" id="view-orders">
-          <h3>Заказы</h3>
+          <h3>Операции по заказам</h3>
           <form class="inline-form" id="create-order-form">
             <select id="order-table" required></select>
             <select id="order-item"></select>
@@ -87,9 +164,9 @@
         </section>
 
         <section class="panel hidden" id="view-menu">
-          <h3>Позиции меню</h3>
+          <h3>Каталог меню</h3>
           <form id="create-menu-item-form" class="inline-form">
-            <input id="menu-item-name" placeholder="Название" required />
+            <input id="menu-item-name" placeholder="Название" minlength="2" maxlength="80" required />
             <input id="menu-item-price" type="number" min="1" step="0.01" placeholder="Цена" required />
             <select id="menu-item-category" required></select>
             <button type="submit">Добавить позицию</button>
@@ -98,8 +175,39 @@
           <div id="menu-list" class="table-like"></div>
         </section>
 
+        <section class="panel hidden" id="view-clients">
+          <h3>Клиенты</h3>
+          <form id="create-client-form" class="inline-form">
+            <input id="client-name-input" placeholder="ФИО клиента" minlength="2" maxlength="80" required />
+            <input id="client-phone-input" placeholder="Телефон" minlength="5" maxlength="30" />
+            <input id="client-notes-input" placeholder="Комментарий" />
+            <button type="submit">Добавить клиента</button>
+          </form>
+          <div class="actions"><button id="refresh-clients">Обновить</button></div>
+          <div id="clients-list" class="table-like"></div>
+        </section>
+
+        <section class="panel hidden" id="view-inventory">
+          <h3>Ингредиенты и рецептуры</h3>
+          <form id="create-ingredient-form" class="inline-form">
+            <input id="ingredient-name-input" placeholder="Ингредиент" minlength="2" maxlength="80" required />
+            <input id="ingredient-unit-input" placeholder="Ед. изм. (г, мл, шт)" minlength="1" maxlength="20" required />
+            <input id="ingredient-stock-input" type="number" min="0" step="0.01" placeholder="Остаток" required />
+            <button type="submit">Добавить ингредиент</button>
+          </form>
+          <form id="create-recipe-form" class="inline-form">
+            <select id="recipe-menu-item" required></select>
+            <select id="recipe-ingredient" required></select>
+            <input id="recipe-amount" type="number" min="0.01" step="0.01" placeholder="Количество" required />
+            <button type="submit">Добавить в рецепт</button>
+          </form>
+          <div class="actions"><button id="refresh-inventory">Обновить</button></div>
+          <div id="ingredients-list" class="table-like"></div>
+          <div id="recipes-list" class="table-like"></div>
+        </section>
+
         <section class="panel hidden" id="view-tables">
-          <h3>Столы</h3>
+          <h3>Управление столами</h3>
           <form id="create-table-form" class="inline-form">
             <input id="table-number" type="number" min="1" placeholder="Номер стола" required />
             <input id="table-seats" type="number" min="1" placeholder="Мест" required />
@@ -110,7 +218,7 @@
         </section>
 
         <section class="panel hidden" id="view-payments">
-          <h3>Оплаты</h3>
+          <h3>Финансовые операции</h3>
           <form id="payment-form" class="inline-form">
             <input type="number" id="payment-order-id" placeholder="Order ID" required />
             <select id="payment-method">
@@ -119,14 +227,16 @@
             </select>
             <button type="submit">Провести оплату</button>
           </form>
+          <div class="actions"><button id="refresh-payments">Обновить</button></div>
+          <div id="payments-list" class="table-like"></div>
         </section>
 
         <section class="panel hidden" id="view-users">
-          <h3>Пользователи</h3>
+          <h3>Учетные записи сотрудников</h3>
           <form id="create-user-form" class="inline-form">
             <input id="user-name-input" placeholder="ФИО" required />
-            <input id="user-email-input" type="email" placeholder="Email" required />
-            <input id="user-password-input" type="password" placeholder="Пароль" required />
+            <input id="user-email-input" type="email" placeholder="Email" minlength="6" required />
+            <input id="user-password-input" type="password" placeholder="Пароль" minlength="6" required />
             <select id="user-role-input">
               <option value="WAITER">Официант</option>
               <option value="CHEF">Повар</option>
@@ -138,8 +248,15 @@
           <div class="actions"><button id="refresh-users">Обновить</button></div>
           <div id="users-list" class="table-like"></div>
         </section>
+
+        <section class="panel hidden" id="view-analytics">
+          <h3>Аналитика по этапам</h3>
+          <div class="actions"><button id="refresh-analytics">Обновить</button></div>
+          <div id="analytics-statuses" class="table-like"></div>
+          <div id="analytics-tables" class="table-like"></div>
+        </section>
       </main>
     </div>
-    <script src="/app.js"></script>
+    <script src="/app.js?v=20260429-3"></script>
   </body>
 </html>
