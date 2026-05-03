@@ -40,4 +40,30 @@ router.get("/summary", async (_req, res) => {
   });
 });
 
+router.get("/orders-by-status", async (_req, res) => {
+  const statuses = await prisma.orderStatus.findMany({ orderBy: { id: "asc" } });
+  const result = await Promise.all(statuses.map(async (s) => ({
+    statusCode: s.code,
+    statusName: s.name,
+    count: await prisma.order.count({ where: { statusId: s.id } })
+  })));
+  return res.json(result);
+});
+
+router.get("/tables-load", async (_req, res) => {
+  const rows = await prisma.cafeTable.findMany({
+    include: {
+      _count: { select: { orders: true } }
+    },
+    orderBy: { number: "asc" }
+  });
+  return res.json(rows.map((t) => ({
+    tableId: t.id,
+    number: t.number,
+    seats: t.seats,
+    isOccupied: t.isOccupied,
+    ordersCount: t._count.orders
+  })));
+});
+
 module.exports = { reportsRouter: router };
