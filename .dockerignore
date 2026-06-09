@@ -3,6 +3,8 @@
 .env
 .env.*
 !.env.example
+!.env.production.example
+!.env.demo.example
 node_modules
 .venv-docs
 dist

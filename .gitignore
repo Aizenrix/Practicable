@@ -1,5 +1,7 @@
 node_modules/
 .env
+.env.production
+.env.demo
 .DS_Store
 *.log
 prisma/dev.db
