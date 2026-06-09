@@ -1,0 +1,11 @@
+Обязательные скриншоты этапа 3:
+
+01_env_production_or_demo.png
+02_deploy_files.png
+03_deploy_command_success.png
+04_service_or_build_started.png
+05_app_available.png
+06_logs_without_critical_errors.png
+07_main_scenario_works.png
+08_restart_success.png
+09_release_or_public_url.png
