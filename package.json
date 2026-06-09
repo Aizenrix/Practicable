@@ -14,7 +14,11 @@
     "lint": "eslint .",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "check": "npm run lint && npm test"
+    "check": "npm run lint && npm test",
+    "test:api": "node --test \"test/api/**/*.test.js\"",
+    "test:smoke": "node --test \"test/smoke/**/*.test.js\"",
+    "api-test": "node scripts/run_api_tests.js",
+    "quality-check": "npm run check && npm run api-test"
   },
   "prisma": {
     "seed": "node prisma/seed.js"
