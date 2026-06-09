@@ -203,7 +203,9 @@ async function loadReferenceData() {
 
   const tableSelect = byId("order-table");
   if (tableSelect) {
-    tableSelect.innerHTML = state.tables.map((t) => `<option value="${t.id}">Стол ${t.number}</option>`).join("");
+    tableSelect.innerHTML = state.tables
+      .map((t) => `<option value="${t.id}">Стол ${t.number}</option>`)
+      .join("");
   }
 
   const itemSelect = byId("order-item");
@@ -216,17 +218,23 @@ async function loadReferenceData() {
 
   const catSelect = byId("menu-item-category");
   if (catSelect) {
-    catSelect.innerHTML = categories.map((c) => `<option value="${c.id}">${c.name}</option>`).join("");
+    catSelect.innerHTML = categories
+      .map((c) => `<option value="${c.id}">${c.name}</option>`)
+      .join("");
   }
 
   const recipeMenuSelect = byId("recipe-menu-item");
   if (recipeMenuSelect) {
-    recipeMenuSelect.innerHTML = state.menuItems.map((m) => `<option value="${m.id}">${m.name}</option>`).join("");
+    recipeMenuSelect.innerHTML = state.menuItems
+      .map((m) => `<option value="${m.id}">${m.name}</option>`)
+      .join("");
   }
 
   const recipeIngredientSelect = byId("recipe-ingredient");
   if (recipeIngredientSelect) {
-    recipeIngredientSelect.innerHTML = state.ingredients.map((i) => `<option value="${i.id}">${i.name}</option>`).join("");
+    recipeIngredientSelect.innerHTML = state.ingredients
+      .map((i) => `<option value="${i.id}">${i.name}</option>`)
+      .join("");
   }
 }
 
@@ -234,7 +242,10 @@ function renderPendingItems() {
   const wrap = byId("pending-items");
   if (!wrap) return;
   wrap.innerHTML = state.pendingOrderItems
-    .map((it, i) => `<div class="chip">${it.name} x${it.quantity} <button class="btn-xs" data-remove-item="${i}">x</button></div>`)
+    .map(
+      (it, i) =>
+        `<div class="chip">${it.name} x${it.quantity} <button class="btn-xs" data-remove-item="${i}">x</button></div>`
+    )
     .join("");
 }
 
@@ -243,105 +254,135 @@ async function loadDashboard() {
   byId("ordersCount").textContent = data.ordersCount;
   byId("openOrdersCount").textContent = data.openOrdersCount;
   byId("revenue").textContent = `${Number(data.revenue || 0).toFixed(2)} ₽`;
-  byId("topItems").innerHTML = data.topItems.map((x) => `<li>${x.name}: ${x.quantity}</li>`).join("");
+  byId("topItems").innerHTML = data.topItems
+    .map((x) => `<li>${x.name}: ${x.quantity}</li>`)
+    .join("");
 }
 
 async function loadOrders() {
   const rows = await api("/api/orders");
-  renderRows("orders-list", ["ID", "Клиент", "Стол", "Статус", "Сумма", "Действия"], rows.map((o) => {
-    const statusOptions = state.statuses
-      .map((s) => `<option ${o.status?.id === s.id ? "selected" : ""} value="${s.code}">${s.name}</option>`)
-      .join("");
+  renderRows(
+    "orders-list",
+    ["ID", "Клиент", "Стол", "Статус", "Сумма", "Действия"],
+    rows.map((o) => {
+      const statusOptions = state.statuses
+        .map(
+          (s) =>
+            `<option ${o.status?.id === s.id ? "selected" : ""} value="${s.code}">${s.name}</option>`
+        )
+        .join("");
 
-    return [
-      o.id,
-      o.client?.fullName || "Гость",
-      o.table?.number || "—",
-      o.status?.name || "—",
-      `${Number(o.totalAmount || 0).toFixed(2)} ₽`,
-      `<select class="btn-xs" data-status-order="${o.id}">${statusOptions}</select>`
-    ];
-  }));
+      return [
+        o.id,
+        o.client?.fullName || "Гость",
+        o.table?.number || "—",
+        o.status?.name || "—",
+        `${Number(o.totalAmount || 0).toFixed(2)} ₽`,
+        `<select class="btn-xs" data-status-order="${o.id}">${statusOptions}</select>`
+      ];
+    })
+  );
 }
 
 async function loadMenu() {
   const rows = await api("/api/menu/items");
   state.menuItems = rows;
-  renderRows("menu-list", ["ID", "Категория", "Название", "Цена", "Доступность", "Действия"], rows.map((m) => [
-    m.id,
-    m.category?.name || "—",
-    m.name,
-    `${m.price} ₽`,
-    m.isAvailable ? "Да" : "Нет",
-    `<button class="btn-xs" data-toggle-item="${m.id}" data-current="${m.isAvailable}">${m.isAvailable ? "Скрыть" : "Открыть"}</button>`
-  ]));
+  renderRows(
+    "menu-list",
+    ["ID", "Категория", "Название", "Цена", "Доступность", "Действия"],
+    rows.map((m) => [
+      m.id,
+      m.category?.name || "—",
+      m.name,
+      `${m.price} ₽`,
+      m.isAvailable ? "Да" : "Нет",
+      `<button class="btn-xs" data-toggle-item="${m.id}" data-current="${m.isAvailable}">${m.isAvailable ? "Скрыть" : "Открыть"}</button>`
+    ])
+  );
 }
 
 async function loadClients() {
   const rows = await api("/api/clients");
-  renderRows("clients-list", ["ID", "ФИО", "Телефон", "Заказов", "Комментарий", "Создан"], rows.map((c) => [
-    c.id,
-    c.fullName,
-    c.phone || "—",
-    c._count?.orders || 0,
-    c.notes || "—",
-    fmtDate(c.createdAt)
-  ]));
+  renderRows(
+    "clients-list",
+    ["ID", "ФИО", "Телефон", "Заказов", "Комментарий", "Создан"],
+    rows.map((c) => [
+      c.id,
+      c.fullName,
+      c.phone || "—",
+      c._count?.orders || 0,
+      c.notes || "—",
+      fmtDate(c.createdAt)
+    ])
+  );
 }
 
 async function loadInventory() {
-  const [ingredients, recipes] = await Promise.all([api("/api/inventory/ingredients"), api("/api/inventory/recipes")]);
+  const [ingredients, recipes] = await Promise.all([
+    api("/api/inventory/ingredients"),
+    api("/api/inventory/recipes")
+  ]);
   state.ingredients = ingredients;
-  renderRows("ingredients-list", ["ID", "Ингредиент", "Ед. изм.", "Остаток"], ingredients.map((i) => [
-    i.id,
-    i.name,
-    i.unit,
-    i.stockAmount
-  ]));
+  renderRows(
+    "ingredients-list",
+    ["ID", "Ингредиент", "Ед. изм.", "Остаток"],
+    ingredients.map((i) => [i.id, i.name, i.unit, i.stockAmount])
+  );
 
-  renderRows("recipes-list", ["ID", "Позиция меню", "Ингредиент", "Количество"], recipes.map((r) => [
-    r.id,
-    r.menuItem?.name || "—",
-    r.ingredient?.name || "—",
-    r.amount
-  ]));
+  renderRows(
+    "recipes-list",
+    ["ID", "Позиция меню", "Ингредиент", "Количество"],
+    recipes.map((r) => [r.id, r.menuItem?.name || "—", r.ingredient?.name || "—", r.amount])
+  );
 }
 
 async function loadTables() {
   const rows = await api("/api/reference/tables");
   state.tables = rows;
-  renderRows("tables-list", ["ID", "Номер", "Мест", "Занят", "Описание", "Действия"], rows.map((t) => [
-    t.id,
-    t.number,
-    t.seats,
-    t.isOccupied ? "Да" : "Нет",
-    t.description || "—",
-    `<button class="btn-xs" data-toggle-table="${t.id}" data-current="${t.isOccupied}">${t.isOccupied ? "Освободить" : "Занять"}</button>`
-  ]));
+  renderRows(
+    "tables-list",
+    ["ID", "Номер", "Мест", "Занят", "Описание", "Действия"],
+    rows.map((t) => [
+      t.id,
+      t.number,
+      t.seats,
+      t.isOccupied ? "Да" : "Нет",
+      t.description || "—",
+      `<button class="btn-xs" data-toggle-table="${t.id}" data-current="${t.isOccupied}">${t.isOccupied ? "Освободить" : "Занять"}</button>`
+    ])
+  );
 }
 
 async function loadPayments() {
   const rows = await api("/api/payments");
-  renderRows("payments-list", ["ID", "Заказ", "Стол", "Метод", "Сумма", "Время"], rows.map((p) => [
-    p.id,
-    p.orderId,
-    p.order?.table?.number || "—",
-    p.paymentMethod?.name || "—",
-    `${Number(p.amount || 0).toFixed(2)} ₽`,
-    fmtDate(p.paidAt)
-  ]));
+  renderRows(
+    "payments-list",
+    ["ID", "Заказ", "Стол", "Метод", "Сумма", "Время"],
+    rows.map((p) => [
+      p.id,
+      p.orderId,
+      p.order?.table?.number || "—",
+      p.paymentMethod?.name || "—",
+      `${Number(p.amount || 0).toFixed(2)} ₽`,
+      fmtDate(p.paidAt)
+    ])
+  );
 }
 
 async function loadUsers() {
   const rows = await api("/api/users");
-  renderRows("users-list", ["ID", "ФИО", "Email", "Роль", "Активен", "Создан"], rows.map((u) => [
-    u.id,
-    u.fullName,
-    u.email,
-    u.role?.name || "—",
-    u.isActive ? "Да" : "Нет",
-    fmtDate(u.createdAt)
-  ]));
+  renderRows(
+    "users-list",
+    ["ID", "ФИО", "Email", "Роль", "Активен", "Создан"],
+    rows.map((u) => [
+      u.id,
+      u.fullName,
+      u.email,
+      u.role?.name || "—",
+      u.isActive ? "Да" : "Нет",
+      fmtDate(u.createdAt)
+    ])
+  );
 }
 
 async function loadAnalytics() {
@@ -350,18 +391,17 @@ async function loadAnalytics() {
     api("/api/reports/tables-load")
   ]);
 
-  renderRows("analytics-statuses", ["Статус", "Код", "Количество"], byStatus.map((s) => [
-    s.statusName,
-    s.statusCode,
-    s.count
-  ]));
+  renderRows(
+    "analytics-statuses",
+    ["Статус", "Код", "Количество"],
+    byStatus.map((s) => [s.statusName, s.statusCode, s.count])
+  );
 
-  renderRows("analytics-tables", ["Стол", "Мест", "Занят", "Заказов"], byTables.map((t) => [
-    t.number,
-    t.seats,
-    t.isOccupied ? "Да" : "Нет",
-    t.ordersCount
-  ]));
+  renderRows(
+    "analytics-tables",
+    ["Стол", "Мест", "Занят", "Заказов"],
+    byTables.map((t) => [t.number, t.seats, t.isOccupied ? "Да" : "Нет", t.ordersCount])
+  );
 }
 
 async function loadCurrentUser() {
@@ -402,29 +442,33 @@ document.querySelectorAll(".menu-btn").forEach((btn) => {
 loginForm.addEventListener("submit", async (e) => {
   e.preventDefault();
   const button = e.submitter || e.target.querySelector('button[type="submit"]');
-  withActionCooldown("auth-login", async () => {
-    const email = normalizeText(byId("email").value).toLowerCase();
-    const password = byId("password").value;
+  withActionCooldown(
+    "auth-login",
+    async () => {
+      const email = normalizeText(byId("email").value).toLowerCase();
+      const password = byId("password").value;
 
-    if (!isValidEmail(email)) {
-      throw new Error("Введите корректный email.");
-    }
-    if (!password || password.length < 6) {
-      throw new Error("Пароль должен содержать минимум 6 символов.");
-    }
+      if (!isValidEmail(email)) {
+        throw new Error("Введите корректный email.");
+      }
+      if (!password || password.length < 6) {
+        throw new Error("Пароль должен содержать минимум 6 символов.");
+      }
 
-    const data = await api("/api/auth/login", {
-      method: "POST",
-      body: JSON.stringify({ email, password })
-    });
+      const data = await api("/api/auth/login", {
+        method: "POST",
+        body: JSON.stringify({ email, password })
+      });
 
-    state.token = data.token;
-    localStorage.setItem("token", data.token);
-    await loadCurrentUser();
-    await loadReferenceData();
-    await loadDashboard();
-    showMessage("Успешный вход. Система готова к работе.");
-  }, button);
+      state.token = data.token;
+      localStorage.setItem("token", data.token);
+      await loadCurrentUser();
+      await loadReferenceData();
+      await loadDashboard();
+      showMessage("Успешный вход. Система готова к работе.");
+    },
+    button
+  );
 });
 
 on("logout-btn", "click", () => {
@@ -458,24 +502,31 @@ on("create-order-form", "submit", async (e) => {
   if (!requireAuth()) return;
   if (!state.pendingOrderItems.length) return showMessage("Добавьте минимум одну позицию", "err");
   const button = e.submitter || e.target.querySelector('button[type="submit"]');
-  withActionCooldown("create-order", async () => {
-    const tableId = Number(byId("order-table").value);
-    if (!Number.isInteger(tableId) || tableId <= 0) {
-      throw new Error("Выберите корректный стол.");
-    }
+  withActionCooldown(
+    "create-order",
+    async () => {
+      const tableId = Number(byId("order-table").value);
+      if (!Number.isInteger(tableId) || tableId <= 0) {
+        throw new Error("Выберите корректный стол.");
+      }
 
-    await api("/api/orders", {
-      method: "POST",
-      body: JSON.stringify({
-        tableId,
-        items: state.pendingOrderItems.map((x) => ({ menuItemId: x.menuItemId, quantity: x.quantity }))
-      })
-    });
-    state.pendingOrderItems = [];
-    renderPendingItems();
-    await Promise.all([loadOrders(), loadTables(), loadDashboard()]);
-    showMessage("Заказ успешно создан");
-  }, button);
+      await api("/api/orders", {
+        method: "POST",
+        body: JSON.stringify({
+          tableId,
+          items: state.pendingOrderItems.map((x) => ({
+            menuItemId: x.menuItemId,
+            quantity: x.quantity
+          }))
+        })
+      });
+      state.pendingOrderItems = [];
+      renderPendingItems();
+      await Promise.all([loadOrders(), loadTables(), loadDashboard()]);
+      showMessage("Заказ успешно создан");
+    },
+    button
+  );
 });
 
 on("orders-list", "change", async (e) => {
@@ -522,149 +573,185 @@ on("tables-list", "click", async (e) => {
 on("create-menu-item-form", "submit", async (e) => {
   e.preventDefault();
   const button = e.submitter || e.target.querySelector('button[type="submit"]');
-  withActionCooldown("create-menu-item", async () => {
-    const name = normalizeText(byId("menu-item-name").value);
-    const price = Number(byId("menu-item-price").value);
-    const categoryId = Number(byId("menu-item-category").value);
-    if (name.length < 2) throw new Error("Название позиции слишком короткое.");
-    if (!Number.isFinite(price) || price <= 0) throw new Error("Цена должна быть больше 0.");
-    if (!Number.isInteger(categoryId) || categoryId <= 0) throw new Error("Выберите категорию.");
+  withActionCooldown(
+    "create-menu-item",
+    async () => {
+      const name = normalizeText(byId("menu-item-name").value);
+      const price = Number(byId("menu-item-price").value);
+      const categoryId = Number(byId("menu-item-category").value);
+      if (name.length < 2) throw new Error("Название позиции слишком короткое.");
+      if (!Number.isFinite(price) || price <= 0) throw new Error("Цена должна быть больше 0.");
+      if (!Number.isInteger(categoryId) || categoryId <= 0) throw new Error("Выберите категорию.");
 
-    await api("/api/menu/items", {
-      method: "POST",
-      body: JSON.stringify({ name, price, categoryId })
-    });
-    e.target.reset();
-    await Promise.all([loadMenu(), loadReferenceData()]);
-    showMessage("Позиция меню добавлена");
-  }, button);
+      await api("/api/menu/items", {
+        method: "POST",
+        body: JSON.stringify({ name, price, categoryId })
+      });
+      e.target.reset();
+      await Promise.all([loadMenu(), loadReferenceData()]);
+      showMessage("Позиция меню добавлена");
+    },
+    button
+  );
 });
 
 on("create-client-form", "submit", async (e) => {
   e.preventDefault();
   const button = e.submitter || e.target.querySelector('button[type="submit"]');
-  withActionCooldown("create-client", async () => {
-    const fullName = normalizeText(byId("client-name-input").value);
-    const phone = normalizeText(byId("client-phone-input").value);
-    const notes = normalizeText(byId("client-notes-input").value);
-    if (fullName.length < 2) throw new Error("Введите корректное имя клиента.");
-    if (phone && phone.length < 5) throw new Error("Телефон слишком короткий.");
+  withActionCooldown(
+    "create-client",
+    async () => {
+      const fullName = normalizeText(byId("client-name-input").value);
+      const phone = normalizeText(byId("client-phone-input").value);
+      const notes = normalizeText(byId("client-notes-input").value);
+      if (fullName.length < 2) throw new Error("Введите корректное имя клиента.");
+      if (phone && phone.length < 5) throw new Error("Телефон слишком короткий.");
 
-    await api("/api/clients", {
-      method: "POST",
-      body: JSON.stringify({
-        fullName,
-        phone: phone || undefined,
-        notes: notes || undefined
-      })
-    });
-    e.target.reset();
-    await loadClients();
-    showMessage("Клиент добавлен");
-  }, button);
+      await api("/api/clients", {
+        method: "POST",
+        body: JSON.stringify({
+          fullName,
+          phone: phone || undefined,
+          notes: notes || undefined
+        })
+      });
+      e.target.reset();
+      await loadClients();
+      showMessage("Клиент добавлен");
+    },
+    button
+  );
 });
 
 on("create-ingredient-form", "submit", async (e) => {
   e.preventDefault();
   const button = e.submitter || e.target.querySelector('button[type="submit"]');
-  withActionCooldown("create-ingredient", async () => {
-    const name = normalizeText(byId("ingredient-name-input").value);
-    const unit = normalizeText(byId("ingredient-unit-input").value);
-    const stockAmount = Number(byId("ingredient-stock-input").value);
-    if (name.length < 2) throw new Error("Название ингредиента слишком короткое.");
-    if (!unit) throw new Error("Укажите единицу измерения.");
-    if (!Number.isFinite(stockAmount) || stockAmount < 0) throw new Error("Остаток должен быть 0 или больше.");
+  withActionCooldown(
+    "create-ingredient",
+    async () => {
+      const name = normalizeText(byId("ingredient-name-input").value);
+      const unit = normalizeText(byId("ingredient-unit-input").value);
+      const stockAmount = Number(byId("ingredient-stock-input").value);
+      if (name.length < 2) throw new Error("Название ингредиента слишком короткое.");
+      if (!unit) throw new Error("Укажите единицу измерения.");
+      if (!Number.isFinite(stockAmount) || stockAmount < 0)
+        throw new Error("Остаток должен быть 0 или больше.");
 
-    await api("/api/inventory/ingredients", {
-      method: "POST",
-      body: JSON.stringify({ name, unit, stockAmount })
-    });
-    e.target.reset();
-    await Promise.all([loadInventory(), loadReferenceData()]);
-    showMessage("Ингредиент добавлен");
-  }, button);
+      await api("/api/inventory/ingredients", {
+        method: "POST",
+        body: JSON.stringify({ name, unit, stockAmount })
+      });
+      e.target.reset();
+      await Promise.all([loadInventory(), loadReferenceData()]);
+      showMessage("Ингредиент добавлен");
+    },
+    button
+  );
 });
 
 on("create-recipe-form", "submit", async (e) => {
   e.preventDefault();
   const button = e.submitter || e.target.querySelector('button[type="submit"]');
-  withActionCooldown("create-recipe", async () => {
-    const menuItemId = Number(byId("recipe-menu-item").value);
-    const ingredientId = Number(byId("recipe-ingredient").value);
-    const amount = Number(byId("recipe-amount").value);
-    if (!Number.isInteger(menuItemId) || menuItemId <= 0) throw new Error("Выберите позицию меню.");
-    if (!Number.isInteger(ingredientId) || ingredientId <= 0) throw new Error("Выберите ингредиент.");
-    if (!Number.isFinite(amount) || amount <= 0) throw new Error("Количество должно быть больше 0.");
+  withActionCooldown(
+    "create-recipe",
+    async () => {
+      const menuItemId = Number(byId("recipe-menu-item").value);
+      const ingredientId = Number(byId("recipe-ingredient").value);
+      const amount = Number(byId("recipe-amount").value);
+      if (!Number.isInteger(menuItemId) || menuItemId <= 0)
+        throw new Error("Выберите позицию меню.");
+      if (!Number.isInteger(ingredientId) || ingredientId <= 0)
+        throw new Error("Выберите ингредиент.");
+      if (!Number.isFinite(amount) || amount <= 0)
+        throw new Error("Количество должно быть больше 0.");
 
-    await api("/api/inventory/recipes", {
-      method: "POST",
-      body: JSON.stringify({ menuItemId, ingredientId, amount })
-    });
-    e.target.reset();
-    await loadInventory();
-    showMessage("Рецептура обновлена");
-  }, button);
+      await api("/api/inventory/recipes", {
+        method: "POST",
+        body: JSON.stringify({ menuItemId, ingredientId, amount })
+      });
+      e.target.reset();
+      await loadInventory();
+      showMessage("Рецептура обновлена");
+    },
+    button
+  );
 });
 
 on("create-table-form", "submit", async (e) => {
   e.preventDefault();
   const button = e.submitter || e.target.querySelector('button[type="submit"]');
-  withActionCooldown("create-table", async () => {
-    const number = Number(byId("table-number").value);
-    const seats = Number(byId("table-seats").value);
-    if (!Number.isInteger(number) || number <= 0) throw new Error("Номер стола должен быть положительным.");
-    if (!Number.isInteger(seats) || seats <= 0) throw new Error("Количество мест должно быть положительным.");
+  withActionCooldown(
+    "create-table",
+    async () => {
+      const number = Number(byId("table-number").value);
+      const seats = Number(byId("table-seats").value);
+      if (!Number.isInteger(number) || number <= 0)
+        throw new Error("Номер стола должен быть положительным.");
+      if (!Number.isInteger(seats) || seats <= 0)
+        throw new Error("Количество мест должно быть положительным.");
 
-    await api("/api/reference/tables", {
-      method: "POST",
-      body: JSON.stringify({ number, seats })
-    });
-    e.target.reset();
-    await Promise.all([loadTables(), loadReferenceData()]);
-    showMessage("Стол добавлен");
-  }, button);
+      await api("/api/reference/tables", {
+        method: "POST",
+        body: JSON.stringify({ number, seats })
+      });
+      e.target.reset();
+      await Promise.all([loadTables(), loadReferenceData()]);
+      showMessage("Стол добавлен");
+    },
+    button
+  );
 });
 
 on("create-user-form", "submit", async (e) => {
   e.preventDefault();
   const button = e.submitter || e.target.querySelector('button[type="submit"]');
-  withActionCooldown("create-user", async () => {
-    const fullName = normalizeText(byId("user-name-input").value);
-    const email = normalizeText(byId("user-email-input").value).toLowerCase();
-    const password = byId("user-password-input").value;
-    const roleCode = byId("user-role-input").value;
+  withActionCooldown(
+    "create-user",
+    async () => {
+      const fullName = normalizeText(byId("user-name-input").value);
+      const email = normalizeText(byId("user-email-input").value).toLowerCase();
+      const password = byId("user-password-input").value;
+      const roleCode = byId("user-role-input").value;
 
-    if (fullName.length < 2) throw new Error("ФИО слишком короткое.");
-    if (!isValidEmail(email)) throw new Error("Введите корректный email сотрудника.");
-    if (!password || password.length < 6) throw new Error("Пароль сотрудника должен быть минимум 6 символов.");
-    if (!roleCode) throw new Error("Выберите роль сотрудника.");
+      if (fullName.length < 2) throw new Error("ФИО слишком короткое.");
+      if (!isValidEmail(email)) throw new Error("Введите корректный email сотрудника.");
+      if (!password || password.length < 6)
+        throw new Error("Пароль сотрудника должен быть минимум 6 символов.");
+      if (!roleCode) throw new Error("Выберите роль сотрудника.");
 
-    await api("/api/users", {
-      method: "POST",
-      body: JSON.stringify({ fullName, email, password, roleCode })
-    });
-    e.target.reset();
-    await loadUsers();
-    showMessage("Пользователь добавлен");
-  }, button);
+      await api("/api/users", {
+        method: "POST",
+        body: JSON.stringify({ fullName, email, password, roleCode })
+      });
+      e.target.reset();
+      await loadUsers();
+      showMessage("Пользователь добавлен");
+    },
+    button
+  );
 });
 
 on("payment-form", "submit", async (e) => {
   e.preventDefault();
   const button = e.submitter || e.target.querySelector('button[type="submit"]');
-  withActionCooldown("create-payment", async () => {
-    const orderId = Number(byId("payment-order-id").value);
-    const paymentMethodCode = byId("payment-method").value;
-    if (!Number.isInteger(orderId) || orderId <= 0) throw new Error("Введите корректный ID заказа.");
-    if (!paymentMethodCode) throw new Error("Выберите способ оплаты.");
+  withActionCooldown(
+    "create-payment",
+    async () => {
+      const orderId = Number(byId("payment-order-id").value);
+      const paymentMethodCode = byId("payment-method").value;
+      if (!Number.isInteger(orderId) || orderId <= 0)
+        throw new Error("Введите корректный ID заказа.");
+      if (!paymentMethodCode) throw new Error("Выберите способ оплаты.");
 
-    await api("/api/payments", {
-      method: "POST",
-      body: JSON.stringify({ orderId, paymentMethodCode })
-    });
-    await Promise.all([loadPayments(), loadOrders(), loadDashboard()]);
-    showMessage("Оплата проведена");
-  }, button);
+      await api("/api/payments", {
+        method: "POST",
+        body: JSON.stringify({ orderId, paymentMethodCode })
+      });
+      await Promise.all([loadPayments(), loadOrders(), loadDashboard()]);
+      showMessage("Оплата проведена");
+    },
+    button
+  );
 });
 
 on("refresh-orders", "click", () => loadOrders().catch((e) => showMessage(e.message, "err")));

@@ -10,13 +10,15 @@ const createOrderSchema = z.object({
   tableId: z.number().int().positive(),
   clientId: z.number().int().positive().optional(),
   comment: z.string().optional(),
-  items: z.array(
-    z.object({
-      menuItemId: z.number().int().positive(),
-      quantity: z.number().int().positive(),
-      note: z.string().optional()
-    })
-  ).min(1)
+  items: z
+    .array(
+      z.object({
+        menuItemId: z.number().int().positive(),
+        quantity: z.number().int().positive(),
+        note: z.string().optional()
+      })
+    )
+    .min(1)
 });
 
 async function recalcOrderTotal(orderId) {

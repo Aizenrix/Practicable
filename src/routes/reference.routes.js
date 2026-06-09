@@ -43,14 +43,18 @@ router.post("/tables", allowRoles("ADMIN", "MANAGER"), async (req, res) => {
   }
 });
 
-router.patch("/tables/:id/occupancy", allowRoles("ADMIN", "MANAGER", "WAITER"), async (req, res) => {
-  const id = Number(req.params.id);
-  const isOccupied = Boolean(req.body?.isOccupied);
-  const row = await prisma.cafeTable.update({
-    where: { id },
-    data: { isOccupied }
-  });
-  return res.json(row);
-});
+router.patch(
+  "/tables/:id/occupancy",
+  allowRoles("ADMIN", "MANAGER", "WAITER"),
+  async (req, res) => {
+    const id = Number(req.params.id);
+    const isOccupied = Boolean(req.body?.isOccupied);
+    const row = await prisma.cafeTable.update({
+      where: { id },
+      data: { isOccupied }
+    });
+    return res.json(row);
+  }
+);
 
 module.exports = { referenceRouter: router };

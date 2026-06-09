@@ -40,11 +40,9 @@ router.post("/login", loginAttemptLimiter, async (req, res) => {
 
     clearLoginFailures(req.loginLimiterKey);
 
-    const token = jwt.sign(
-      { userId: user.id, role: user.role.code },
-      env.jwtSecret,
-      { expiresIn: "12h" }
-    );
+    const token = jwt.sign({ userId: user.id, role: user.role.code }, env.jwtSecret, {
+      expiresIn: "12h"
+    });
 
     return res.json({
       token,

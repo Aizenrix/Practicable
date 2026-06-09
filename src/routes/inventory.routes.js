@@ -63,7 +63,9 @@ router.post("/recipes", allowRoles("ADMIN", "MANAGER"), async (req, res) => {
   try {
     const data = recipeItemSchema.parse(req.body);
     const row = await prisma.recipeItem.upsert({
-      where: { menuItemId_ingredientId: { menuItemId: data.menuItemId, ingredientId: data.ingredientId } },
+      where: {
+        menuItemId_ingredientId: { menuItemId: data.menuItemId, ingredientId: data.ingredientId }
+      },
       create: data,
       update: { amount: data.amount }
     });

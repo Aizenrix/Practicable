@@ -17,7 +17,8 @@
 
 body {
   margin: 0;
-  background: radial-gradient(1200px 800px at 100% -30%, #161f2e55 0%, transparent 45%),
+  background:
+    radial-gradient(1200px 800px at 100% -30%, #161f2e55 0%, transparent 45%),
     linear-gradient(180deg, #06070a 0%, #0a0d13 100%);
   color: var(--text);
   font-family: Inter, "Segoe UI", Arial, sans-serif;
@@ -154,7 +155,9 @@ select.field-invalid {
   padding: 18px;
   margin-top: 16px;
   border-radius: 12px;
-  box-shadow: inset 0 1px 0 #ffffff10, 0 8px 24px #00000024;
+  box-shadow:
+    inset 0 1px 0 #ffffff10,
+    0 8px 24px #00000024;
 }
 
 .panel h3,
