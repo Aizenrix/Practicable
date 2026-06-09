@@ -1,4 +1,4 @@
-.PHONY: setup run check format docker-build docker-up docker-down logs clean help deploy deploy-down deploy-restart check-deploy build-release
+.PHONY: setup run check format docker-build docker-up docker-down logs clean help deploy deploy-down deploy-restart check-deploy build-release test api-test quality-check performance logs-check
 
 help:
 	@echo "Calipso.Coffee — команды проекта"
@@ -15,6 +15,11 @@ help:
 	@echo "  make deploy-restart — перезапуск prod-стенда"
 	@echo "  make check-deploy   — проверка статуса и логов"
 	@echo "  make build-release  — сборка release/project_release.zip"
+	@echo "  make test           — npm test (этап 4)"
+	@echo "  make api-test       — проверка API curl + отчёт"
+	@echo "  make quality-check  — test + api-test + logs"
+	@echo "  make performance    — curl-замеры производительности"
+	@echo "  make logs-check     — сохранить logs_tail.txt"
 	@echo "  make clean          — удаление временных артефактов"
 
 setup:
@@ -67,6 +72,25 @@ check-deploy:
 build-release:
 	@chmod +x scripts/build_release.sh 2>/dev/null || true
 	./scripts/build_release.sh
+
+test:
+	npm test 2>&1 | tee reports/npm_test_report.txt
+
+api-test:
+	@chmod +x scripts/api-test.sh 2>/dev/null || true
+	./scripts/api-test.sh
+
+quality-check:
+	@chmod +x scripts/quality-check.sh 2>/dev/null || true
+	./scripts/quality-check.sh
+
+performance:
+	@chmod +x scripts/performance.sh 2>/dev/null || true
+	./scripts/performance.sh
+
+logs-check:
+	@chmod +x scripts/logs-check.sh 2>/dev/null || true
+	./scripts/logs-check.sh
 
 clean:
 	rm -rf node_modules/.cache
