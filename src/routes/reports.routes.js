@@ -1,4 +1,3 @@
-const express = require("express");
 const { prisma } = require("../lib/prisma");
 const { authRequired, allowRoles } = require("../middleware/auth");
 
@@ -42,11 +41,13 @@ router.get("/summary", async (_req, res) => {
 
 router.get("/orders-by-status", async (_req, res) => {
   const statuses = await prisma.orderStatus.findMany({ orderBy: { id: "asc" } });
-  const result = await Promise.all(statuses.map(async (s) => ({
-    statusCode: s.code,
-    statusName: s.name,
-    count: await prisma.order.count({ where: { statusId: s.id } })
-  })));
+  const result = await Promise.all(
+    statuses.map(async (s) => ({
+      statusCode: s.code,
+      statusName: s.name,
+      count: await prisma.order.count({ where: { statusId: s.id } })
+    }))
+  );
   return res.json(result);
 });
 
@@ -57,13 +58,15 @@ router.get("/tables-load", async (_req, res) => {
     },
     orderBy: { number: "asc" }
   });
-  return res.json(rows.map((t) => ({
-    tableId: t.id,
-    number: t.number,
-    seats: t.seats,
-    isOccupied: t.isOccupied,
-    ordersCount: t._count.orders
-  })));
+  return res.json(
+    rows.map((t) => ({
+      tableId: t.id,
+      number: t.number,
+      seats: t.seats,
+      isOccupied: t.isOccupied,
+      ordersCount: t._count.orders
+    }))
+  );
 });
 
 module.exports = { reportsRouter: router };
