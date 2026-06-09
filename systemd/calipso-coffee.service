@@ -1,0 +1,15 @@
+[Unit]
+Description=Calipso.Coffee Docker demo/production stand
+After=docker.service
+Requires=docker.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+WorkingDirectory=/opt/calipso-coffee
+ExecStart=/usr/bin/docker compose -f docker-compose.prod.yml up --build -d
+ExecStop=/usr/bin/docker compose -f docker-compose.prod.yml down
+TimeoutStartSec=0
+
+[Install]
+WantedBy=multi-user.target
