@@ -1,0 +1,12 @@
+Скриншоты этапа 4:
+
+01_deployed_app_opened.png
+02_devtools_console_no_critical_errors.png
+03_network_requests_success.png
+04_lighthouse_or_performance.png
+05_api_success_request.png
+06_api_error_request_handled.png
+07_tests_success.png
+08_logs_without_critical_errors.png
+09_defect_before_after.png
+10_git_commit.png

@@ -1,0 +1,154 @@
+
+> calipso-coffee@1.0.0 test
+> node --test "test/**/*.test.js"
+
+TAP version 13
+# [0mPOST /api/auth/login [33m401[0m 62.037 ms - 54[0m
+# Subtest: API /api/auth
+    # Subtest: POST /login с неверным паролем возвращает 401
+    ok 1 - POST /login с неверным паролем возвращает 401
+      ---
+      duration_ms: 85.702541
+      type: 'test'
+      ...
+# [0mGET /api/auth/me [33m401[0m 0.716 ms - 55[0m
+    # Subtest: GET /me без токена возвращает 401
+    ok 2 - GET /me без токена возвращает 401
+      ---
+      duration_ms: 3.097125
+      type: 'test'
+      ...
+# [0mPOST /api/auth/login [32m200[0m 55.585 ms - 406[0m
+    # Subtest: POST /login с валидными данными возвращает token
+    ok 3 - POST /login с валидными данными возвращает token
+      ---
+      duration_ms: 57.818834
+      type: 'test'
+      ...
+    1..3
+ok 1 - API /api/auth
+  ---
+  duration_ms: 146.994833
+  type: 'suite'
+  ...
+# [0mGET /api/unknown-route-test [33m404[0m 0.435 ms - 48[0m
+# Subtest: API unknown route
+    # Subtest: GET /api/unknown возвращает 404 JSON
+    ok 1 - GET /api/unknown возвращает 404 JSON
+      ---
+      duration_ms: 2.047291
+      type: 'test'
+      ...
+    1..1
+ok 2 - API unknown route
+  ---
+  duration_ms: 2.25675
+  type: 'suite'
+  ...
+# [0mGET /health [32m200[0m 1.662 ms - 46[0m
+# Subtest: API /health
+    # Subtest: GET /health возвращает 200 и status ok
+    ok 1 - GET /health возвращает 200 и status ok
+      ---
+      duration_ms: 21.757833
+      type: 'test'
+      ...
+    1..1
+ok 3 - API /health
+  ---
+  duration_ms: 22.242375
+  type: 'suite'
+  ...
+# Subtest: config/env
+    # Subtest: PORT из окружения приводится к числу
+    ok 1 - PORT из окружения приводится к числу
+      ---
+      duration_ms: 3.670209
+      type: 'test'
+      ...
+    # Subtest: JWT_SECRET можно переопределить через окружение
+    ok 2 - JWT_SECRET можно переопределить через окружение
+      ---
+      duration_ms: 0.333917
+      type: 'test'
+      ...
+    # Subtest: databaseUrl содержит схему для SQLite по умолчанию при отсутствии DATABASE_URL
+    ok 3 - databaseUrl содержит схему для SQLite по умолчанию при отсутствии DATABASE_URL
+      ---
+      duration_ms: 0.400875
+      type: 'test'
+      ...
+    1..3
+ok 4 - config/env
+  ---
+  duration_ms: 5.042041
+  type: 'suite'
+  ...
+# Subtest: middleware/security
+    # Subtest: mutationCooldown пропускает GET без ограничений
+    ok 1 - mutationCooldown пропускает GET без ограничений
+      ---
+      duration_ms: 0.409083
+      type: 'test'
+      ...
+    # Subtest: mutationCooldown вызывает next для первого POST
+    ok 2 - mutationCooldown вызывает next для первого POST
+      ---
+      duration_ms: 0.110167
+      type: 'test'
+      ...
+    # Subtest: mutationCooldown возвращает 429 при повторном POST в том же окне
+    ok 3 - mutationCooldown возвращает 429 при повторном POST в том же окне
+      ---
+      duration_ms: 0.099875
+      type: 'test'
+      ...
+    # Subtest: loginAttemptLimiter выставляет ключ и вызывает next
+    ok 4 - loginAttemptLimiter выставляет ключ и вызывает next
+      ---
+      duration_ms: 0.631916
+      type: 'test'
+      ...
+    # Subtest: registerLoginFailure накапливает попытки и блокирует после порога
+    ok 5 - registerLoginFailure накапливает попытки и блокирует после порога
+      ---
+      duration_ms: 0.34475
+      type: 'test'
+      ...
+    1..5
+ok 5 - middleware/security
+  ---
+  duration_ms: 2.046708
+  type: 'suite'
+  ...
+# [0mPOST /api/auth/login [32m200[0m 66.249 ms - 406[0m
+# [0mGET /api/menu/items [32m200[0m 2.291 ms - 227[0m
+# Subtest: Smoke: основные API после авторизации
+    # Subtest: GET /api/menu/items возвращает 200
+    ok 1 - GET /api/menu/items возвращает 200
+      ---
+      duration_ms: 4.898125
+      type: 'test'
+      ...
+# [0mGET /api/reports/summary [32m200[0m 3.035 ms - 63[0m
+    # Subtest: GET /api/reports/summary возвращает 200
+    ok 2 - GET /api/reports/summary возвращает 200
+      ---
+      duration_ms: 4.497417
+      type: 'test'
+      ...
+    1..2
+ok 6 - Smoke: основные API после авторизации
+  ---
+  duration_ms: 91.567625
+  type: 'suite'
+  ...
+1..6
+# tests 15
+# suites 6
+# pass 15
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 242.612875

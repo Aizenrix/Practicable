@@ -1,0 +1,3 @@
+k6 smoke-тест: k6 run test/load/basic_load.js
+Пороги: p95<1000ms, checks>95%
+Запустите при установленном k6 и приложите вывод.

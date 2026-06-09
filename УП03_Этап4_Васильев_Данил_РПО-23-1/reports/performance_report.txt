@@ -1,0 +1,7 @@
+Calipso.Coffee performance report
+Base: http://localhost:4000
+health: 200 time=0.004325s
+login: 200 time=0.117763s
+
+Lighthouse: npx lighthouse http://localhost:4000 --output html --output-path reports/lighthouse_report.html
+k6: k6 run test/load/basic_load.js
