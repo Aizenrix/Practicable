@@ -39,7 +39,7 @@ npm run dev
 
 Открыть: **http://localhost:4000**
 
-### Docker
+### Docker (разработка)
 
 ```bash
 cp .env.example .env
@@ -47,6 +47,15 @@ docker compose up --build
 ```
 
 Или: `make docker-up` / `scripts\docker-up.bat`
+
+### Production / Demo-стенд (этап 3)
+
+```bash
+cp .env.production.example .env.production
+make deploy
+```
+
+Адрес: **http://localhost:4000** — подробнее: [DEPLOYMENT.md](DEPLOYMENT.md)
 
 ### Проверка и форматирование
 
