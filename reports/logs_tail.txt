@@ -1,0 +1,100 @@
+calipso-coffee-prod  | 
+calipso-coffee-prod  | The database is already in sync with the Prisma schema.
+calipso-coffee-prod  | 
+calipso-coffee-prod  | Running generate... (Use --skip-generate to skip the generators)
+calipso-coffee-prod  | [2K[1A[2K[GRunning generate... - Prisma Client
+calipso-coffee-prod  | [2K[1A[2K[G✔ Generated Prisma Client (v6.19.3) to ./node_modules/@prisma/client in 76ms
+calipso-coffee-prod  | 
+calipso-coffee-prod  | Запуск Calipso.Coffee API на порту 4000...
+calipso-coffee-prod  | Calipso.Coffee API запущен на порту 4000
+calipso-coffee-prod  | [0mGET /health [32m200[0m 2.284 ms - 46[0m
+calipso-coffee-prod  | [0mGET /health [32m200[0m 0.421 ms - 46[0m
+calipso-coffee-prod  | [0mGET /health [32m200[0m 0.379 ms - 46[0m
+calipso-coffee-prod  | [0mGET /health [32m200[0m 0.319 ms - 46[0m
+calipso-coffee-prod  | [0mGET /health [32m200[0m 0.242 ms - 46[0m
+calipso-coffee-prod  | [0mGET /health [32m200[0m 0.335 ms - 46[0m
+calipso-coffee-prod  | [0mGET /health [32m200[0m 0.270 ms - 46[0m
+calipso-coffee-prod  | [0mGET /health [32m200[0m 0.284 ms - 46[0m
+calipso-coffee-prod  | [0mGET /health [32m200[0m 0.890 ms - 46[0m
+calipso-coffee-prod  | [0mGET /health [32m200[0m 0.289 ms - 46[0m
+calipso-coffee-prod  | [0mGET /health [32m200[0m 0.229 ms - 46[0m
+calipso-coffee-prod  | [0mGET /health [32m200[0m 0.284 ms - 46[0m
+calipso-coffee-prod  | [0mGET /health [32m200[0m 0.228 ms - 46[0m
+calipso-coffee-prod  | [0mGET /health [32m200[0m 0.359 ms - 46[0m
+calipso-coffee-prod  | [0mGET /health [32m200[0m 0.230 ms - 46[0m
+calipso-coffee-prod  | [0mGET /health [32m200[0m 0.201 ms - 46[0m
+calipso-coffee-prod  | [0mGET /health [32m200[0m 0.234 ms - 46[0m
+calipso-coffee-prod  | [0mGET /health [32m200[0m 0.743 ms - 46[0m
+calipso-coffee-prod  | [0mPOST /api/auth/login [32m200[0m 107.150 ms - 406[0m
+calipso-coffee-prod  | [0mGET /health [32m200[0m 0.228 ms - 46[0m
+calipso-coffee-prod  | [0mGET /health [32m200[0m 0.850 ms - 46[0m
+calipso-coffee-prod  | [0mPOST /api/auth/login [33m401[0m 89.207 ms - 54[0m
+calipso-coffee-prod  | [0mPOST /api/auth/login [33m429[0m 0.099 ms - 97[0m
+calipso-coffee-prod  | [0mGET /api/menu/items [33m401[0m 0.324 ms - 55[0m
+calipso-coffee-prod  | [0mGET /api/unknown-route-test [33m404[0m 0.751 ms - 161[0m
+calipso-coffee-prod  | [0mGET /health [32m200[0m 0.218 ms - 46[0m
+calipso-coffee-prod  | [0mGET /health [32m200[0m 0.201 ms - 46[0m
+calipso-coffee-prod  | [0mGET /health [32m200[0m 0.247 ms - 46[0m
+calipso-coffee-prod  | [0mGET /health [32m200[0m 0.216 ms - 46[0m
+calipso-coffee-prod  | [0mGET /api/reports/summary [36m304[0m 12.074 ms - -[0m
+calipso-coffee-prod  | [0mGET /health [32m200[0m 0.379 ms - 46[0m
+calipso-coffee-prod  | [0mGET /health [32m200[0m 0.319 ms - 46[0m
+calipso-coffee-prod  | [0mGET /health [32m200[0m 0.226 ms - 46[0m
+calipso-coffee-prod  | [0mGET /health [32m200[0m 0.228 ms - 46[0m
+calipso-coffee-prod  | [0mGET /api/orders [32m200[0m 3.178 ms - 2[0m
+calipso-coffee-prod  | [0mGET /api/menu/items [32m200[0m 7.564 ms - 2[0m
+calipso-coffee-prod  | [0mGET /api/reports/summary [32m200[0m 7.051 ms - 63[0m
+calipso-coffee-prod  | [0mGET /api/orders [36m304[0m 4.924 ms - -[0m
+calipso-coffee-prod  | [0mGET /api/menu/items [36m304[0m 4.168 ms - -[0m
+calipso-coffee-prod  | [0mPOST /api/menu/items [32m201[0m 8.951 ms - 124[0m
+calipso-coffee-prod  | [0mGET /api/menu/items [32m200[0m 2.107 ms - 219[0m
+calipso-coffee-prod  | [0mGET /api/menu/items [36m304[0m 1.795 ms - -[0m
+calipso-coffee-prod  | [0mGET /api/reference/tables [32m200[0m 1.486 ms - 1073[0m
+calipso-coffee-prod  | [0mGET /api/reference/statuses [32m200[0m 1.225 ms - 439[0m
+calipso-coffee-prod  | [0mGET /api/menu/categories [32m200[0m 1.256 ms - 408[0m
+calipso-coffee-prod  | [0mGET /api/inventory/ingredients [32m200[0m 1.459 ms - 2[0m
+calipso-coffee-prod  | [0mGET /api/clients [32m200[0m 4.335 ms - 2[0m
+calipso-coffee-prod  | [0mGET /health [32m200[0m 0.207 ms - 46[0m
+calipso-coffee-prod  | [0mPOST /api/clients [32m201[0m 6.273 ms - 102[0m
+calipso-coffee-prod  | [0mGET /api/clients [32m200[0m 2.486 ms - 126[0m
+calipso-coffee-prod  | [0mGET /api/orders [36m304[0m 4.565 ms - -[0m
+calipso-coffee-prod  | [0mPOST /api/orders [32m201[0m 17.806 ms - 1078[0m
+calipso-coffee-prod  | [0mGET /api/orders [32m200[0m 1.855 ms - 681[0m
+calipso-coffee-prod  | [0mGET /api/reference/tables [32m200[0m 1.423 ms - 1072[0m
+calipso-coffee-prod  | [0mGET /api/reports/summary [32m200[0m 3.363 ms - 104[0m
+calipso-coffee-prod  | [0mPOST /api/orders [32m201[0m 17.169 ms - 1291[0m
+calipso-coffee-prod  | [0mGET /api/orders [32m200[0m 2.025 ms - 1574[0m
+calipso-coffee-prod  | [0mGET /api/reference/tables [36m304[0m 1.361 ms - -[0m
+calipso-coffee-prod  | [0mGET /api/reports/summary [32m200[0m 3.131 ms - 105[0m
+calipso-coffee-prod  | [0mGET /api/reports/summary [36m304[0m 2.253 ms - -[0m
+calipso-coffee-prod  | [0mGET /health [32m200[0m 0.218 ms - 46[0m
+calipso-coffee-prod  | [0mGET /health [32m200[0m 0.263 ms - 46[0m
+calipso-coffee-prod  | [0mGET /health [32m200[0m 0.211 ms - 46[0m
+calipso-coffee-prod  | [0mGET /health [32m200[0m 0.294 ms - 46[0m
+calipso-coffee-prod  | [0mGET /health [32m200[0m 0.234 ms - 46[0m
+calipso-coffee-prod  | [0mGET /health [32m200[0m 0.228 ms - 46[0m
+calipso-coffee-prod  | [0mGET /health [32m200[0m 0.229 ms - 46[0m
+calipso-coffee-prod  | [0mGET /health [32m200[0m 0.190 ms - 46[0m
+calipso-coffee-prod  | [0mGET /health [32m200[0m 0.484 ms - 46[0m
+calipso-coffee-prod  | [0mPOST /api/auth/login [32m200[0m 98.039 ms - 406[0m
+calipso-coffee-prod  | [0mGET /health [32m200[0m 0.260 ms - 46[0m
+calipso-coffee-prod  | [0mGET /health [32m200[0m 0.197 ms - 46[0m
+calipso-coffee-prod  | [0mGET /health [32m200[0m 0.845 ms - 46[0m
+calipso-coffee-prod  | [0mPOST /api/auth/login [33m401[0m 88.145 ms - 54[0m
+calipso-coffee-prod  | [0mPOST /api/auth/login [33m429[0m 0.074 ms - 97[0m
+calipso-coffee-prod  | [0mGET /api/menu/items [33m401[0m 0.165 ms - 55[0m
+calipso-coffee-prod  | [0mGET /api/unknown-route-test [33m404[0m 0.415 ms - 161[0m
+calipso-coffee-prod  | [0mGET /health [32m200[0m 0.230 ms - 46[0m
+calipso-coffee-prod  | [0mGET /health [32m200[0m 0.221 ms - 46[0m
+calipso-coffee-prod  | [0mGET /health [32m200[0m 0.243 ms - 46[0m
+calipso-coffee-prod  | [0mGET /health [32m200[0m 0.217 ms - 46[0m
+calipso-coffee-prod  | [0mGET /health [32m200[0m 0.211 ms - 46[0m
+calipso-coffee-prod  | [0mGET /health [32m200[0m 0.226 ms - 46[0m
+calipso-coffee-prod  | [0mGET /health [32m200[0m 0.224 ms - 46[0m
+calipso-coffee-prod  | [0mGET /health [32m200[0m 0.303 ms - 46[0m
+calipso-coffee-prod  | [0mGET /health [32m200[0m 0.244 ms - 46[0m
+calipso-coffee-prod  | [0mGET /health [32m200[0m 0.798 ms - 46[0m
+calipso-coffee-prod  | [0mPOST /api/auth/login [33m401[0m 84.744 ms - 54[0m
+calipso-coffee-prod  | [0mPOST /api/auth/login [33m429[0m 0.069 ms - 97[0m
+calipso-coffee-prod  | [0mGET /api/menu/items [33m401[0m 0.161 ms - 55[0m
+calipso-coffee-prod  | [0mGET /api/unknown-route-test [33m404[0m 0.147 ms - 161[0m

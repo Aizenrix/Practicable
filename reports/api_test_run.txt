@@ -1,0 +1,168 @@
+Calipso.Coffee API test report
+Base URL: http://localhost:4000
+Date: 2026-06-09T21:56:23.236Z
+
+[OK] GET /health -> 200 (22 ms)
+[ERR-OK] POST /api/auth/login wrong password -> 401 (95 ms)
+[OK] POST /api/auth/login -> 429 (2 ms)
+[OK] GET /api/menu/items -> 401 (1 ms)
+[ERR-OK] GET /api/unknown-route-test -> 404 (1 ms)
+
+Node test suite:
+
+> calipso-coffee@1.0.0 test
+> node --test "test/**/*.test.js"
+
+TAP version 13
+# [0mPOST /api/auth/login [33m401[0m 61.070 ms - 54[0m
+# Subtest: API /api/auth
+    # Subtest: POST /login с неверным паролем возвращает 401
+    ok 1 - POST /login с неверным паролем возвращает 401
+      ---
+      duration_ms: 85.895084
+      type: 'test'
+      ...
+# [0mGET /api/auth/me [33m401[0m 0.776 ms - 55[0m
+    # Subtest: GET /me без токена возвращает 401
+    ok 2 - GET /me без токена возвращает 401
+      ---
+      duration_ms: 2.853625
+      type: 'test'
+      ...
+# [0mPOST /api/auth/login [32m200[0m 56.124 ms - 406[0m
+    # Subtest: POST /login с валидными данными возвращает token
+    ok 3 - POST /login с валидными данными возвращает token
+      ---
+      duration_ms: 58.024625
+      type: 'test'
+      ...
+    1..3
+ok 1 - API /api/auth
+  ---
+  duration_ms: 147.122
+  type: 'suite'
+  ...
+# [0mGET /api/unknown-route-test [33m404[0m 0.327 ms - 48[0m
+# Subtest: API unknown route
+    # Subtest: GET /api/unknown возвращает 404 JSON
+    ok 1 - GET /api/unknown возвращает 404 JSON
+      ---
+      duration_ms: 1.803209
+      type: 'test'
+      ...
+    1..1
+ok 2 - API unknown route
+  ---
+  duration_ms: 2.015583
+  type: 'suite'
+  ...
+# [0mGET /health [32m200[0m 1.725 ms - 46[0m
+# Subtest: API /health
+    # Subtest: GET /health возвращает 200 и status ok
+    ok 1 - GET /health возвращает 200 и status ok
+      ---
+      duration_ms: 22.708542
+      type: 'test'
+      ...
+    1..1
+ok 3 - API /health
+  ---
+  duration_ms: 23.021583
+  type: 'suite'
+  ...
+# Subtest: config/env
+    # Subtest: PORT из окружения приводится к числу
+    ok 1 - PORT из окружения приводится к числу
+      ---
+      duration_ms: 3.878416
+      type: 'test'
+      ...
+    # Subtest: JWT_SECRET можно переопределить через окружение
+    ok 2 - JWT_SECRET можно переопределить через окружение
+      ---
+      duration_ms: 0.395458
+      type: 'test'
+      ...
+    # Subtest: databaseUrl содержит схему для SQLite по умолчанию при отсутствии DATABASE_URL
+    ok 3 - databaseUrl содержит схему для SQLite по умолчанию при отсутствии DATABASE_URL
+      ---
+      duration_ms: 0.484
+      type: 'test'
+      ...
+    1..3
+ok 4 - config/env
+  ---
+  duration_ms: 5.342708
+  type: 'suite'
+  ...
+# Subtest: middleware/security
+    # Subtest: mutationCooldown пропускает GET без ограничений
+    ok 1 - mutationCooldown пропускает GET без ограничений
+      ---
+      duration_ms: 0.382292
+      type: 'test'
+      ...
+    # Subtest: mutationCooldown вызывает next для первого POST
+    ok 2 - mutationCooldown вызывает next для первого POST
+      ---
+      duration_ms: 0.120916
+      type: 'test'
+      ...
+    # Subtest: mutationCooldown возвращает 429 при повторном POST в том же окне
+    ok 3 - mutationCooldown возвращает 429 при повторном POST в том же окне
+      ---
+      duration_ms: 0.107416
+      type: 'test'
+      ...
+    # Subtest: loginAttemptLimiter выставляет ключ и вызывает next
+    ok 4 - loginAttemptLimiter выставляет ключ и вызывает next
+      ---
+      duration_ms: 0.648
+      type: 'test'
+      ...
+    # Subtest: registerLoginFailure накапливает попытки и блокирует после порога
+    ok 5 - registerLoginFailure накапливает попытки и блокирует после порога
+      ---
+      duration_ms: 0.353833
+      type: 'test'
+      ...
+    1..5
+ok 5 - middleware/security
+  ---
+  duration_ms: 2.085292
+  type: 'suite'
+  ...
+# [0mPOST /api/auth/login [32m200[0m 63.624 ms - 406[0m
+# [0mGET /api/menu/items [32m200[0m 2.406 ms - 227[0m
+# Subtest: Smoke: основные API после авторизации
+    # Subtest: GET /api/menu/items возвращает 200
+    ok 1 - GET /api/menu/items возвращает 200
+      ---
+      duration_ms: 5.026375
+      type: 'test'
+      ...
+# [0mGET /api/reports/summary [32m200[0m 2.585 ms - 63[0m
+    # Subtest: GET /api/reports/summary возвращает 200
+    ok 2 - GET /api/reports/summary возвращает 200
+      ---
+      duration_ms: 3.971167
+      type: 'test'
+      ...
+    1..2
+ok 6 - Smoke: основные API после авторизации
+  ---
+  duration_ms: 87.93275
+  type: 'suite'
+  ...
+1..6
+# tests 15
+# suites 6
+# pass 15
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 242.165625
+
+
+Saved: /Users/aizen/Documents/Calipso-Coffee.Coffee/reports/api_test_report.txt

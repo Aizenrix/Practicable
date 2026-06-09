@@ -2,3 +2,4 @@ node_modules/
 .venv-docs/
 УП03_*/
 Этапы и доки/
+test/load/
