@@ -1,0 +1,11 @@
+> calipso-coffee@1.0.0 dev
+> node src/server.js
+
+Calipso.Coffee API запущен на порту 4000
+GET /health 200 1.998 ms - 46
+
+Проверка health:
+{"status":"ok","service":"calipso-coffee-api"}
+
+Дата проверки: {TODAY}
+Студент: {STUDENT_FIO}
