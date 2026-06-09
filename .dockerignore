@@ -1,0 +1,21 @@
+.git
+.gitignore
+.env
+.env.*
+!.env.example
+node_modules
+.venv-docs
+dist
+build
+.idea
+.vscode
+.DS_Store
+*.log
+screenshots
+docs
+УП03_*
+scripts/generate_etap1_docs.py
+prisma/dev.db
+prisma/dev.db-journal
+test
+Этапы и доки
