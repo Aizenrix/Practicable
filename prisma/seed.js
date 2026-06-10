@@ -58,6 +58,21 @@ async function main() {
     });
   }
 
+  const coffeeCategory = await prisma.menuCategory.findUniqueOrThrow({ where: { name: "Кофе" } });
+  const menuItems = [
+    { name: "Эспрессо", price: 120, categoryId: coffeeCategory.id },
+    { name: "Капучино", price: 180, categoryId: coffeeCategory.id },
+    { name: "Латте", price: 200, categoryId: coffeeCategory.id }
+  ];
+  for (const item of menuItems) {
+    const existing = await prisma.menuItem.findFirst({ where: { name: item.name } });
+    if (existing) {
+      await prisma.menuItem.update({ where: { id: existing.id }, data: item });
+    } else {
+      await prisma.menuItem.create({ data: { ...item, isAvailable: true } });
+    }
+  }
+
   for (let i = 1; i <= 10; i += 1) {
     await prisma.cafeTable.upsert({
       where: { number: i },
@@ -77,6 +92,20 @@ async function main() {
       email: "admin@calipso.coffee",
       passwordHash: adminHash,
       roleId: adminRole.id
+    }
+  });
+
+  const waiterRole = await prisma.role.findUniqueOrThrow({ where: { code: "WAITER" } });
+  const waiterHash = await bcrypt.hash("waiter123", 10);
+
+  await prisma.user.upsert({
+    where: { email: "waiter@calipso.coffee" },
+    update: { passwordHash: waiterHash, roleId: waiterRole.id },
+    create: {
+      fullName: "Демо официант",
+      email: "waiter@calipso.coffee",
+      passwordHash: waiterHash,
+      roleId: waiterRole.id
     }
   });
 }

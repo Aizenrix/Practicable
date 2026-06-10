@@ -6,6 +6,11 @@
   Пароль: admin123
   Роль:   ADMIN
 
+Официант (демо, этап 5 — проверка ролей):
+  Email:  waiter@calipso.coffee
+  Пароль: waiter123
+  Роль:   WAITER
+
 Роли в системе (создаются seed):
   WAITER  — Официант
   CHEF    — Повар
