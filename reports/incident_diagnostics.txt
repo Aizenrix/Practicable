@@ -1,0 +1,28 @@
+=== INCIDENT BUG-06 diagnostics ===
+Date: 2026-06-10
+Environment: Docker prod http://localhost:4000
+
+--- Network (до исправления) ---
+GET /api/auth/me
+Authorization: Bearer <invalid>
+Response: 401 {"error":"Неверный токен"}
+
+--- Browser Console (до исправления) ---
+Error: Неверный токен
+  at api (app.js)
+  at loadCurrentUser (app.js)
+  at async (app.js startup)
+
+--- Docker logs ---
+GET /api/auth/me 401 — ожидаемое поведение API
+
+--- Root cause ---
+public/app.js: console.error(error) при штатном 401 при восстановлении сессии
+
+--- Fix ---
+clearSession() + isExpectedAuthError() — без console.error для 401 токена
+
+--- Verify ---
+make check
+make release-check
+GitHub Actions: .github/workflows/ci.yml

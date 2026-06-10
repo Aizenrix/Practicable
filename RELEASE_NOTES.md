@@ -1,40 +1,36 @@
-# RELEASE_NOTES.md — Calipso.Coffee v1.0.0
+# RELEASE_NOTES.md — Calipso.Coffee v1.0.1
 
 **Дата:** 10.06.2026  
-**Версия:** 1.0.0  
+**Версия:** 1.0.1  
 **Студент:** Васильев Данил Вячеславович, группа РПО 23/1
 
-## Что вошло в релиз
+## Что изменилось
 
-- Backend API на Node.js + Express + Prisma (SQLite)
-- Веб-интерфейс: 9 разделов управления кафе
-- JWT-авторизация с ролями (WAITER, CHEF, ADMIN, MANAGER)
-- Docker demo/production-стенд (`docker-compose.prod.yml`)
-- Скрипты развертывания: deploy, restart, check_deploy, build_release
-- Production/demo конфигурация: `.env.production.example`, `.env.demo.example`
-- Nginx reverse proxy config, systemd unit (для VPS)
-- ESLint + Prettier + unit-тесты
+Релиз поддержки (этап 6 УП.03): исправлен инцидент с протухшим JWT в браузере и добавлен автоматический CI.
 
-## Как запустить
+## Что исправлено
 
-```bash
-cp .env.production.example .env.production
-docker compose -f docker-compose.prod.yml up --build -d
-```
+- **BUG-06:** при невалидном токене в `localStorage` приложение больше не пишет красную ошибку в Console; сессия корректно сбрасывается, пользователь видит форму входа.
+- Добавлен GitHub Actions workflow для `npm run check` и `npm run build` на каждый push/PR.
 
-Открыть: http://localhost:4000
+## Как проверить
 
-## Известные ограничения
+1. Запустить стенд: `make deploy` или `docker compose -f docker-compose.prod.yml up -d`.
+2. Открыть http://localhost:4000, войти как admin.
+3. В DevTools → Application → Local Storage изменить `token` на `invalid`.
+4. Обновить страницу — Console **без** красной ошибки, сообщение «Сессия истекла…», форма входа видна.
+5. Локально: `make check`, `make release-check`.
 
-- SQLite — файловая БД, не для высоких нагрузок в production
-- JWT_SECRET по умолчанию — заменить в реальном окружении
-- Демо-стенд работает на localhost:4000 (без внешнего VPS)
-- `npm audit` может показывать 2 moderate vulnerabilities в dev-зависимостях
+## Ограничения
+
+- SQLite и demo JWT_SECRET — как в v1.0.0.
+- `npm audit` moderate — в плане обновления зависимостей.
 
 ## История этапов УП.03
 
 | Этап | Результат |
 |------|-----------|
-| 1 | Входной аудит, инструкции, журнал проблем |
-| 2 | Makefile, BAT, Docker, ESLint, Prettier |
-| 3 | Production-развертывание, demo-стенд, release-архив |
+| 1–3 | Аудит, Docker, deploy |
+| 4 | Тестирование, DEFECT_LOG |
+| 5 | Безопасность, backup |
+| 6 | Issue → fix → CI → PR → релиз 1.0.1 |
