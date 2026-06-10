@@ -4,8 +4,8 @@
   "description": "Calipso.Coffee order management system backend",
   "main": "src/server.js",
   "scripts": {
-    "test": "node --test \"test/**/*.test.js\"",
-    "test:report": "node --test --test-reporter spec \"test/**/*.test.js\"",
+    "test": "node scripts/run_tests.js",
+    "test:report": "node --test --test-reporter spec $(node -e \"const f=require('fs'),p=require('path');function w(d,a=[]){for(const e of f.readdirSync(d,{withFileTypes:true})){const x=p.join(d,e.name);if(e.isDirectory()&&e.name!=='load')w(x,a);else if(e.name.endsWith('.test.js'))a.push(x);}return a;}console.log(w('test').join(' '))\")",
     "dev": "node src/server.js",
     "start": "node src/server.js",
     "prisma:generate": "prisma generate",
