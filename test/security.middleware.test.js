@@ -30,6 +30,18 @@ describe("middleware/security", () => {
     resetRateLimitStoresForTests();
   });
 
+  it("mutationCooldown пропускает POST /api/auth/login", () => {
+    const req = { method: "POST", path: "/api/auth/login", originalUrl: "/api/auth/login", ip: "127.0.0.1" };
+    const res = mockRes();
+    let nextCalled = false;
+    mutationCooldown(req, res, () => {
+      nextCalled = true;
+    });
+    mutationCooldown(req, res, () => {});
+    assert.equal(nextCalled, true);
+    assert.equal(res.statusCode, 200);
+  });
+
   it("mutationCooldown пропускает GET без ограничений", () => {
     const req = { method: "GET", path: "/api/orders", ip: "127.0.0.1" };
     const res = mockRes();
