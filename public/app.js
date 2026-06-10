@@ -148,6 +148,22 @@ function requireAuth() {
   return true;
 }
 
+function isExpectedAuthError(error) {
+  const msg = String(error?.message || "");
+  return /токен|авторизац|неактивен|сессия/i.test(msg);
+}
+
+function clearSession({ showExpiredMessage = false } = {}) {
+  state.token = null;
+  state.user = null;
+  localStorage.removeItem("token");
+  if (userPanel) userPanel.classList.add("hidden");
+  if (loginForm) loginForm.classList.remove("hidden");
+  if (showExpiredMessage) {
+    showMessage("Сессия истекла или токен недействителен. Войдите снова.", "err");
+  }
+}
+
 function setView(view) {
   state.view = view;
   const meta = viewMeta[view];
@@ -808,9 +824,9 @@ bindFieldValidation("menu-item-name", (value) => {
     await loadDashboard();
     showMessage("Сессия восстановлена.");
   } catch (error) {
-    state.token = null;
-    localStorage.removeItem("token");
-    showMessage("Сессия истекла. Войдите снова.", "err");
-    console.error(error);
+    clearSession({ showExpiredMessage: isExpectedAuthError(error) });
+    if (!isExpectedAuthError(error)) {
+      console.error(error);
+    }
   }
 })();

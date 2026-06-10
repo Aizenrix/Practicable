@@ -7,6 +7,7 @@
 | BUG-03 | Prisma | Deprecation warning `package.json#prisma` | `npm run prisma:generate` | Низкая | open | Миграция на prisma.config.ts в будущем |
 | BUG-04 | Deploy | EADDRINUSE порт 4000 при повторном запуске | `npm run dev` + docker | Средняя | fixed | Документировано: `kill $(lsof -t -i :4000)` |
 | BUG-05 | Security | JWT_SECRET=change_me по умолчанию | Запуск без .env.production | Высокая | open | Сменить секрет в production, см. RISK_REGISTER |
+| BUG-06 | UI Console | Красный `Error: Неверный токен` при протухшем JWT | Изменить token в localStorage + F5 | Низкая | **fixed** | `clearSession()` в `public/app.js`, этап 6 |
 
 ## Исправление BUG-02 (до/после)
 
