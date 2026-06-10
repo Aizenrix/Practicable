@@ -28,6 +28,14 @@ async function recalcOrderTotal(orderId) {
   return totalAmount;
 }
 
+const PRIVILEGED_ROLES = new Set(["ADMIN", "MANAGER", "CHEF"]);
+
+function canAccessOrder(user, order) {
+  if (!user || !order) return false;
+  if (PRIVILEGED_ROLES.has(user.role?.code)) return true;
+  return order.userId === user.id;
+}
+
 router.post("/", allowRoles("WAITER", "ADMIN", "MANAGER"), async (req, res) => {
   try {
     const parsed = createOrderSchema.parse(req.body);
@@ -81,8 +89,13 @@ router.post("/", allowRoles("WAITER", "ADMIN", "MANAGER"), async (req, res) => {
 
 router.get("/", async (req, res) => {
   const onlyOpen = req.query.onlyOpen === "true";
+  const roleCode = req.user.role?.code;
+  const ownerFilter = PRIVILEGED_ROLES.has(roleCode) ? {} : { userId: req.user.id };
   const rows = await prisma.order.findMany({
-    where: onlyOpen ? { closedAt: null } : undefined,
+    where: {
+      ...ownerFilter,
+      ...(onlyOpen ? { closedAt: null } : {})
+    },
     include: {
       table: true,
       status: true,
@@ -94,11 +107,42 @@ router.get("/", async (req, res) => {
   return res.json(rows);
 });
 
+router.get("/:id", async (req, res) => {
+  const id = Number(req.params.id);
+  if (!Number.isInteger(id) || id <= 0) {
+    return res.status(400).json({ error: "Некорректный id заказа" });
+  }
+
+  const order = await prisma.order.findUnique({
+    where: { id },
+    include: {
+      table: true,
+      status: true,
+      payment: { include: { paymentMethod: true } },
+      orderItems: { include: { menuItem: true } },
+      user: { include: { role: true } }
+    }
+  });
+
+  if (!order) return res.status(404).json({ error: "Заказ не найден" });
+  if (!canAccessOrder(req.user, order)) {
+    return res.status(403).json({ error: "Доступ к заказу другого пользователя запрещён" });
+  }
+
+  return res.json(order);
+});
+
 router.patch("/:id/status", allowRoles("WAITER", "CHEF", "ADMIN", "MANAGER"), async (req, res) => {
   const id = Number(req.params.id);
   const { statusCode } = req.body;
   if (!statusCode) {
     return res.status(400).json({ error: "statusCode обязателен" });
+  }
+
+  const existing = await prisma.order.findUnique({ where: { id } });
+  if (!existing) return res.status(404).json({ error: "Заказ не найден" });
+  if (!canAccessOrder(req.user, existing)) {
+    return res.status(403).json({ error: "Доступ к заказу другого пользователя запрещён" });
   }
 
   const status = await prisma.orderStatus.findUnique({ where: { code: String(statusCode) } });

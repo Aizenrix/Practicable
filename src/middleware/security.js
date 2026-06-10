@@ -19,6 +19,10 @@ function mutationCooldown(req, res, next) {
     return next();
   }
 
+  if (req.path === "/api/auth/login" || req.originalUrl?.startsWith("/api/auth/login")) {
+    return next();
+  }
+
   const now = Date.now();
   const userPart = req.user?.id ? `user:${req.user.id}` : `ip:${req.ip}`;
   const key = `${userPart}:${req.method}:${req.path}`;

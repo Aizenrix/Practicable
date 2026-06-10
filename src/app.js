@@ -13,6 +13,7 @@ const { reportsRouter } = require("./routes/reports.routes");
 const { clientsRouter } = require("./routes/clients.routes");
 const { inventoryRouter } = require("./routes/inventory.routes");
 const { mutationCooldown } = require("./middleware/security");
+const { env } = require("./config/env");
 
 function createApp() {
   const app = express();
@@ -28,7 +29,14 @@ function createApp() {
       }
     })
   );
-  app.use(cors());
+  const corsOptions =
+    env.corsOrigin === "*"
+      ? {}
+      : {
+          origin: env.corsOrigin.split(",").map((o) => o.trim()),
+          credentials: true
+        };
+  app.use(cors(corsOptions));
   app.use(express.json());
   app.use(morgan("dev"));
   app.use(express.static(path.join(__dirname, "..", "public")));
@@ -58,7 +66,11 @@ function createApp() {
 
   app.use((err, _req, res, _next) => {
     console.error(err);
-    res.status(500).json({ error: "Внутренняя ошибка сервера" });
+    const body = { error: "Внутренняя ошибка сервера" };
+    if (env.appDebug && !env.isProduction) {
+      body.details = err.message;
+    }
+    res.status(500).json(body);
   });
 
   return app;
