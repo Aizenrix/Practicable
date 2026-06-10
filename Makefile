@@ -1,4 +1,4 @@
-.PHONY: setup run check format docker-build docker-up docker-down logs clean help deploy deploy-down deploy-restart check-deploy build-release test api-test quality-check performance logs-check security-check deps-check backup restore ports-check logs-security role-access-check
+.PHONY: setup run check format docker-build docker-up docker-down logs clean help deploy deploy-down deploy-restart check-deploy build build-release release-check test api-test quality-check performance logs-check security-check deps-check backup restore ports-check logs-security role-access-check
 
 help:
 	@echo "Calipso.Coffee — команды проекта"
@@ -14,6 +14,8 @@ help:
 	@echo "  make deploy-down    — остановка prod-стенда"
 	@echo "  make deploy-restart — перезапуск prod-стенда"
 	@echo "  make check-deploy   — проверка статуса и логов"
+	@echo "  make build          — проверка сборки (этап 6)"
+	@echo "  make release-check  — check + build перед релизом"
 	@echo "  make build-release  — сборка release/project_release.zip"
 	@echo "  make test           — npm test (этап 4)"
 	@echo "  make api-test       — проверка API curl + отчёт"
@@ -75,6 +77,12 @@ deploy-restart:
 check-deploy:
 	@chmod +x scripts/check_deploy.sh 2>/dev/null || true
 	./scripts/check_deploy.sh
+
+build:
+	npm run build
+
+release-check: check build
+	@echo "Project is ready for release"
 
 build-release:
 	@chmod +x scripts/build_release.sh 2>/dev/null || true

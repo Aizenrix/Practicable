@@ -1,6 +1,6 @@
 {
   "name": "calipso-coffee",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Calipso.Coffee order management system backend",
   "main": "src/server.js",
   "scripts": {
@@ -19,7 +19,8 @@
     "test:smoke": "node --test \"test/smoke/**/*.test.js\"",
     "api-test": "node scripts/run_api_tests.js",
     "quality-check": "npm run check && npm run api-test",
-    "test:security": "node --test \"test/security/**/*.test.js\""
+    "test:security": "node --test \"test/security/**/*.test.js\"",
+    "build": "npm run prisma:generate && node --check src/server.js && node --check src/app.js"
   },
   "prisma": {
     "seed": "node prisma/seed.js"

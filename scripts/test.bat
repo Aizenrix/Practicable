@@ -6,6 +6,5 @@ echo ========================================
 echo  Calipso.Coffee — запуск тестов
 echo ========================================
 
-call npm test > reports\npm_test_report.txt 2>&1
-type reports\npm_test_report.txt
+make check
 exit /b %errorlevel%
