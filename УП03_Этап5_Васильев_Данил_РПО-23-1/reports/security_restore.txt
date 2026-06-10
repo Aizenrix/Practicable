@@ -1,0 +1,4 @@
+=== Restore — 2026-06-10 16:51:04 ===
+Источник: backups/backup_20260610_165024.db
+Проверка: curl http://localhost:4000/health
+{"status":"ok","service":"calipso-coffee-api"}

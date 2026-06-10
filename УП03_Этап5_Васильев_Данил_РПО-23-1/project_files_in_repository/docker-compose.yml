@@ -1,0 +1,17 @@
+services:
+  app:
+    build: .
+    container_name: calipso-coffee
+    ports:
+      - "${PORT:-4000}:4000"
+    env_file:
+      - .env
+    environment:
+      PORT: 4000
+      DATABASE_URL: file:/data/dev.db
+    volumes:
+      - calipso_data:/data
+    restart: unless-stopped
+
+volumes:
+  calipso_data:

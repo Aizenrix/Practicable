@@ -1,0 +1,34 @@
+=== Dependency check — 2026-06-10 16:50:22 ===
+
+=== npm audit ===
+# npm audit report
+
+qs  6.11.1 - 6.15.1
+Severity: moderate
+qs has a remotely triggerable DoS: qs.stringify crashes with TypeError on null/undefined entries in comma-format arrays when encodeValuesOnly is set - https://github.com/advisories/GHSA-q8mj-m7cp-5q26
+fix available via `npm audit fix`
+node_modules/body-parser/node_modules/qs
+node_modules/qs
+  express  4.21.0 - 4.22.1 || 5.0.0-alpha.1 - 5.0.1
+  Depends on vulnerable versions of qs
+  node_modules/express
+
+2 moderate severity vulnerabilities
+
+To address all issues, run:
+  npm audit fix
+
+=== npm outdated (кратко) ===
+Package                 Current   Wanted  Latest  Location                             Depended by
+@prisma/client           6.19.3   6.19.3   7.8.0  node_modules/@prisma/client          Calipso-Coffee.Coffee
+bcryptjs                  2.4.3    2.4.3   3.0.3  node_modules/bcryptjs                Calipso-Coffee.Coffee
+dotenv                   16.6.1   16.6.1  17.4.2  node_modules/dotenv                  Calipso-Coffee.Coffee
+eslint                   8.57.1   8.57.1  10.4.1  node_modules/eslint                  Calipso-Coffee.Coffee
+eslint-config-prettier    9.1.2    9.1.2  10.1.8  node_modules/eslint-config-prettier  Calipso-Coffee.Coffee
+express                  4.22.1   4.22.2   5.2.1  node_modules/express                 Calipso-Coffee.Coffee
+helmet                    8.1.0    8.2.0   8.2.0  node_modules/helmet                  Calipso-Coffee.Coffee
+morgan                   1.10.1   1.11.0  1.11.0  node_modules/morgan                  Calipso-Coffee.Coffee
+prisma                   6.19.3   6.19.3   7.8.0  node_modules/prisma                  Calipso-Coffee.Coffee
+zod                     3.25.76  3.25.76   4.4.3  node_modules/zod                     Calipso-Coffee.Coffee
+
+Рекомендация: npm audit fix для moderate, регулярное обновление зависимостей

@@ -1,0 +1,18 @@
+=== Open ports check — 2026-06-10 16:50:24 ===
+
+=== docker compose ps (dev) ===
+NAME                  IMAGE                      COMMAND                  SERVICE   CREATED        STATUS                  PORTS
+calipso-coffee-prod   calipso-coffeecoffee-app   "docker-entrypoint.s…"   app       16 hours ago   Up 16 hours (healthy)   0.0.0.0:4000->4000/tcp
+
+=== docker compose ps (prod) ===
+NAME                  IMAGE                      COMMAND                  SERVICE   CREATED        STATUS                  PORTS
+calipso-coffee-prod   calipso-coffeecoffee-app   "docker-entrypoint.s…"   app       16 hours ago   Up 16 hours (healthy)   0.0.0.0:4000->4000/tcp
+
+=== Прослушиваемые порты (macOS/Linux) ===
+com.docke 23303 aizen  187u  IPv6 0x6faf93c15fa4e19a      0t0  TCP *:4000 (LISTEN)
+node      79394 aizen   19u  IPv4 0x2e9a69e520c205ac      0t0  TCP 127.0.0.1:56513 (LISTEN)
+node      81197 aizen   15u  IPv4 0x552d0c53b881bc20      0t0  TCP 127.0.0.1:58038 (LISTEN)
+node      81913 aizen   15u  IPv4 0xc412475364af9f82      0t0  TCP 127.0.0.1:58769 (LISTEN)
+node      85407 aizen   15u  IPv4 0x541dbb7d89f0fa6e      0t0  TCP 127.0.0.1:62457 (LISTEN)
+
+Ожидается: только 4000 для Calipso.Coffee (demo/prod)

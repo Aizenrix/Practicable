@@ -1,0 +1,4 @@
+=== Backup — 2026-06-10 16:50:24 ===
+Файл: backups/backup_20260610_165024.db
+-rw-r--r--@ 1 aizen  staff  106496 Jun 10 16:50 backups/backup_20260610_165024.db
+Размер:   106496 байт

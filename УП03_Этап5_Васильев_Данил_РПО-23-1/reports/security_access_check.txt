@@ -1,0 +1,19 @@
+=== Role & access check — 2026-06-10 16:52:12 ===
+BASE_URL=http://localhost:4000
+
+--- ADMIN login ---
+{"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc4MTA5OTUzMiwiZXhwIjoxNzgxMTQyNzMyfQ.-9cHfPIYNolDqubl6YADScj26Eyqp3Mj16eXKPvtOrQ","user":{"id":1,"fullName":"Системный администратор","email":"admin@calipso.coffee","role":{"id":3,"code":"ADMIN","name":"Администратор","description":null,"createdAt":"2026-06-09T21:35:41.664Z"}}}
+
+--- WAITER login ---
+{"error":"Слишком частые действия. Повторите через 3 сек."}
+
+--- ADMIN GET /api/users (ожидается 200) ---
+[{"id":1,"fullName":"Системный администратор","email":"admin@calipso.coffee","roleId":3,"isActive":true,"createdAt":"2026-06-09T21:35:41.774Z","updatedAt":"2026-06-10T13:52:10.110Z","role":{"id":3,"code":"ADMIN","name":"Администратор","description":null,"createdAt":"2026-06-09T21:35:41.664Z"}}]
+HTTP 200
+
+--- WAITER GET /api/users (ожидается 403) ---
+{"error":"Необходима авторизация"}
+HTTP 401
+
+--- Создание заказа от ADMIN для теста чужих данных ---
+{"id":4,"userId":1,"clientId":null,"tableId":1,"statusId":1,"totalAmount":111,"comment":null,"openedAt":"2026-06-10T13:52:12.331Z","closedAt":null,"createdAt":"2026-06-10T13:52:12.331Z","updatedAt":"2026-06-10T13:52:12.335Z","table":{"id":1,"number":1,"seats":2,"isOccupied":true,"description":null,"createdAt":"2026-06-09T21:35:41.694Z"},"status":{"id":1,"code":"ACCEPTED","name":"Принят","createdAt":"2026-06-09T21:35:41.669Z"},"orderItems":[{"id":5,"orderId":4,"menuItemId":1,"quantity":1,"unitPrice":111,"note":null,"menuItem":{"id":1,"name":"12","price":111,"description":null,"isAvailable":true,"categoryId":1,"createdAt":"2026-06-09T22:00:23.366Z"}}],"user":{"id":1,"fullName":"Системный администратор","email":"admin@calipso.coffee","passwordHash":"$2a$10$75BlHi0IG8sYHGCc7xfdJ.9D3DXogeOgFEO41IqOszEMv8GuIwaf.","roleId":3,"isActive":true,"createdAt":"2026-06-09T21:35:41.774Z","updatedAt":"2026-06-10T13:52:10.110Z","role":{"id":3,"code":"ADMIN","name":"Администратор","description":null,"createdAt":"2026-06-09T21:35:41.664Z"}}}
